@@ -1,5 +1,6 @@
 const express = require('express')
 const bodyParser = require('body-parser')
+const methodOverride = require('method-override');
 const flash = require('connect-flash');
 const session = require('express-session');
 const passport = require('./config/passport');
@@ -9,9 +10,10 @@ const app = express()
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.urlencoded({ extended: true }), bodyParser.json());
+app.use(methodOverride('_method'));
 app.use(session({ secret: "secret", resave: false, saveUninitialized: false }));
 app.use(passport.initialize(), passport.session());
-app.use(flash(), (req, res) => {
+app.use(flash(), (req, res, next) => {
   res.locals.success_msg = req.flash('success_msg');
   res.locals.error_msg = req.flash('error_msg');
   res.locals.user = req.user;
