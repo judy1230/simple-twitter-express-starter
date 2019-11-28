@@ -55,7 +55,7 @@ module.exports = {
     queryInterface.bulkInsert('Followships',
       Array.from({ length: 5 }).map(d =>
         ({
-          FollowerId: Math.floor(Math.random() * 10) + 1,
+          FollowerId: Math.floor(Math.random() * 3) + 1,
           FollowingId: Math.floor(Math.random() * 3) + 1,
           createdAt: new Date(),
           updatedAt: new Date(),
