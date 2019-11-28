@@ -1,0 +1,29 @@
+<table class="table">
+	<thead class="thead-dark">
+		<tr>
+			<th scope="col">#</th>
+			<th scope="col">Email</th>
+			<th scope="col">Role</th>
+			<th scope="col">Action</th>
+		</tr>
+	</thead>
+	<tbody>
+		{{#each users}}
+		<tr>
+			<td scope="row">{{this.id}}</td>
+			<td >{{this.email}}</td>
+			{{#if this.isAdmin  }}
+			<td>Admin</td>
+			<td>
+				<a href="/admin/setUser/{{this.id}}" style="color: blue;margin-right: 10px;">set as User</a>
+			</td>
+			{{else}}
+			<td>User</td>
+			<td>
+				<a href="/admin/setUser/{{this.id}}" style="color: blue;margin-right: 10px;">set as Admin</a>
+			</td>
+			{{/if}}
+		</tr>
+		{{/each}}
+	</tbody>
+</table>
