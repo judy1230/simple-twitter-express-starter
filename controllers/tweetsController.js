@@ -1,6 +1,7 @@
 const db = require('../models')
 const User = db.User
 const Tweet = db.Tweet
+const Reply = db.Reply
 const pageLimit = 10
 
 const tweetsController = {
@@ -15,13 +16,18 @@ const tweetsController = {
 	// 	)
 	// },
 	getTweets: (req, res) => {
-		return User.findAll({
-			include: [Tweet]
-		}).then(users => {
-			console.log('users[0].tweets',users[0].Tweets)
+		return User.findByPk('1', {
+			include: [
+				Tweet
+				//{ model: Tweet, include: Reply },
+			]
+		})
+			.then(user => {
+				console.log('user.Tweets', user.Tweets[0].id)
+				//console.log('user.Tweets.Reply', user.Tweets.Reply)
 			res.render('tweets',
-					{
-	 					users: users
+				{
+					user:user
 	 				})
 		})
 	},

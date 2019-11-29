@@ -13,14 +13,14 @@
 			  最新推文
 		  </div>
 		  <div class="card-body container row">
-			  {{#each users}}
-			  <img class="img-fluid rounded img-responsive col-3 p-3" src="{{this.avatar}}">
+			 {{#each user.Tweets}}
+			  <img class="img-fluid rounded img-responsive col-3 p-3" src="{{../user.avatar}}">
 			  <div class="container col-8">
 				  <h4>
-					  <a href="/users/{{this.id}}">{{this.name}}</a>
-					  <small>{{moment this.Tweet.createdAt}}</small>
+					  <a href="/users/{{../user.id}}">{{../user.name}}</a>
+					  <small>{{moment this.createdAt}}</small>
 				  </h4>
-				  <p>ASDFASDFASDF{{this.Tweet.description}}</p>
+					<p>{{this.description}}</p>
 				  <div class="container row">
 					  <p class="mr-5">Like</p>
 					  <p>Reply</p>
@@ -28,7 +28,7 @@
 			  </div>
 
 	      <hr>
-			  {{/each}}
+			 {{/each}}
 		  </div>
 
 	  </div>
@@ -51,9 +51,13 @@
 							<small>{{moment this.Tweet.createdAt}}</small>
 						</h4>
 						<p>ASDFASDFASDF{{this.Tweet.description}}</p>
-						<div class="container row">
-							<p class="mr-5">Like</p>
-							<p>Reply</p>
+						<div class="container text-right">
+							{{#if this.isFavorited }}
+							<form action="/favorite/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
+									class="btn btn-danger">UnFollowed</button></form>
+							{{else}}
+							<form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button></form>
+							{{/if}}
 						</div>
 					</div>
 					</hr>
