@@ -1,8 +1,8 @@
 'use strict';
 module.exports = (sequelize, DataTypes) => {
   const Like = sequelize.define('Like', {
-    UserId: DataTypes.integer,
-    TweetId: DataTypes.integer
+    UserId: DataTypes.INTEGER,
+    TweetId: DataTypes.INTEGER
   }, {});
   Like.associate = function(models) {
   };

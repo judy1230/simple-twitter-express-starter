@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const restController = require('../controllers/restController.js')
+const tweetsController = require('../controllers/tweetsController.js')
 //const adminController = require('../controllers/adminController.js')
 //const apiAdminController = require('../controllers/adminController.js')
 //const userController = require('../controllers/userController.js')
@@ -30,7 +30,7 @@ const passport = require('../config/passport')
 router.get('/', (req, res) => res.redirect('/tweets'))
 
 	// //user controller
-	router.get('/tweets', restController.getTweets)
+	router.get('/tweets', tweetsController.getTweets)
 	// router.get('/restaurants/feeds', authenticated, restController.getFeeds)
 	// router.get('/restaurants/top', authenticated, restController.getTopRestaurants)
 
