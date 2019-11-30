@@ -28,16 +28,16 @@ passport.serializeUser((user, cb) => {
   cb(null, user.id)
 })
 passport.deserializeUser((id, cb) => {
-  // User.findByPk(id, {
-  //   include: [
-  //     { model: db.like, as: 'LikedTweet' },
-  //     { model: User, as: 'Followers' },
-  //     { model: User, as: 'Followings' }
-  //   ]
-  // }).then(user => {
-  //   return cb(null, user)
-  // })
-  cb(null, user.id)
+  User.findByPk(id, {
+    include: [
+      { model: db.like, as: 'LikedTweet' },
+      { model: User, as: 'Followers' },
+      { model: User, as: 'Followings' }
+    ]
+  }).then(user => {
+    return cb(null, user)
+  })
+  
 })
 // // JWT
 // const jwt = require('jsonwebtoken')
