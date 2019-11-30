@@ -1,0 +1,83 @@
+<div class="row">
+	{{#each user.Tweets}}
+	<div class="container col-4">
+		<br>
+		<br>
+		<div class="card">
+			<div class="card-body container">
+				<div class="container">
+					<img class="img-fluid rounded img-responsive col-3 p-3" src="{{../user.avatar}}">
+					<h4>
+						<p>{{../user.name}}</p>
+						<small>{{../user.introduction}}</small>
+					</h4>
+					<p>Tweets {{this.length}}</p>
+					<p>Following {{this.length}}</p>
+					<p>Follower {{this.length}}</p>
+					<p>like {{this.length}}</p>
+				</div>
+				<form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
+				</form>
+				<hr>
+				{{/each}}
+			</div>
+
+		</div>
+	</div>
+	<br /><br />
+	<div  class="container col-8">
+			<div class="row">
+				<h4>Tweets</h4>
+				<div class="card-body container row">
+					{{#each user.Tweets}}
+					<div class="col-3">
+						<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
+					</div>
+					<div class="container col-8">
+						<h4>
+							<a href="/users/{{../user.id}}">{{../user.name}}</a>
+							<small>{{moment this.Tweet.createdAt}}</small>
+						</h4>
+						<p>{{this.description}}</p>
+						<div class="container row">
+							<p class="mr-5">Like{{this.LikedTweet.length}}</p>
+							<p>Reply</p>
+						</div>
+					</div>
+					</hr>
+
+					{{/each}}
+				</div>
+			</div>
+
+			<div class="row">
+				<h4>Replies</h4>
+				<div class="card-body container row">
+					{{#each user.Tweets}}
+					<div class="col-3">
+						<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
+					</div>
+
+					<div class="container col-8">
+						<h4>
+							<a href="/users/{{../user.id}}">{{../user.name}}</a>
+							<small>{{moment this.Tweet.createdAt}}</small>
+						</h4>
+						<p>ASDFASDFASDF{{this.Tweet.description}}</p>
+					</div>
+					</hr>
+
+					{{/each}}
+				</div>
+			</div>
+			<form action="/tweets" method="POST">
+				<div class="form-group ">
+					<textarea class="form-control" id="text" name="text" rows="3" placeholder="在想什麼?"></textarea>
+					<button type="submit" class="btn btn-primary float-right mt-2">Reply</button>
+				</div>
+			</form>
+
+	</div>
+
+
+</div>
