@@ -18,19 +18,41 @@ const tweetsController = {
 	getTweets: (req, res) => {
 		return User.findByPk('1', {
 			include: [
-				Tweet
-				//{ model: Tweet, include: Reply },
+				Tweet,
+				{ model: Reply, include: Tweet },
+				{ model: Tweet, as: 'LikedTweet' },
+				{ model: User, as: 'Followers' },
+				{ model: User, as: 'Followings' }
 			]
 		})
 			.then(user => {
-				console.log('user.Tweets', user.Tweets[0].id)
-				//console.log('user.Tweets.Reply', user.Tweets.Reply)
+				console.log('user.Tweets', user.Tweets.length)
+				console.log('user.Tweets', user.LikedTweet.length)
 			res.render('tweets',
 				{
 					user:user
-	 				})
+	 			})
 		})
 	},
+	getTweet: (req, res) => {
+		return User.findByPk('2', {
+			include: [
+				Tweet,
+				{ model: Reply, include: Tweet },
+				{ model: Tweet, as: 'LikedTweet' },
+				{ model: User, as: 'Followers' },
+				{ model: User, as: 'Followings' }
+			]
+		})
+			.then(user => {
+				console.log('user.Tweets', user.LikedTweet.length)
+				res.render('tweet',
+					{
+						user: user
+					})
+			})
+	},
+
 }
 		// let offset = 0
 		// let whereQuery = {}
