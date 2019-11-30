@@ -5,34 +5,44 @@ const Reply = db.Reply
 const pageLimit = 10
 
 const tweetsController = {
-	// getTweets: (req, res) => {
-	// 	User.findAll({ include: [Tweet] }
-	// 		.then(users => {
-	// 			res.render('tweets',
-	// 				{
-	// 					users: users
-	// 				})
-	// 		})
-	// 	)
-	// },
-	getTweets: (req, res) => {
-		return User.findByPk('1', {
-			include: [
-				Tweet,
-				{ model: Reply, include: Tweet },
-				{ model: Tweet, as: 'LikedTweet' },
-				{ model: User, as: 'Followers' },
-				{ model: User, as: 'Followings' }
-			]
-		})
-			.then(user => {
-				console.log('user.Tweets', user.Tweets.length)
-				console.log('user.Tweets', user.LikedTweet.length)
-			res.render('tweets',
-				{
-					user:user
-	 			})
-		})
+	getTweets: async (req, res) => {
+		try {
+			//req.user = await User.findByPk('1')
+			TopFollowers = await User.findAll({
+				include: [
+					{ model: User, as: 'Followers' }
+				]
+			}).then(users => {
+				users.map(user => ({
+					...user.dataValues,
+					//計算追蹤者人數
+					FollowerCount: user.Followers.length,
+					//判斷目前登入使用者是否已追中該User物件
+					isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+				}))
+				//依追蹤者人數排列清單
+				return users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+			})
+			console.log('TopFollowers', TopFollowers)
+			user = await User.findByPk('1', {
+				include: [
+					Tweet,
+					{ model: Reply, include: Tweet },
+					{ model: Tweet, as: 'LikedTweet' },
+					{ model: User, as: 'Followers' },
+					{ model: User, as: 'Followings' }
+				]
+			})
+      res.render('tweets',
+     	{
+	    	TopFollowers : TopFollowers,
+	    	user: user
+    	})
+
+  	 }catch(err) {
+		  return console.log(err)
+	  }
+
 	},
 	getTweet: (req, res) => {
 		return User.findByPk('2', {
