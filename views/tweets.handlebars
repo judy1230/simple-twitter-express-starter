@@ -15,20 +15,22 @@
 		  </div>
 		  <div class="card-body container row">
 				{{#each user.Tweets}}
-			  <img class="img-fluid rounded img-responsive col-3 p-3" src="{{user.avatar}}">
+			  <img class="img-fluid rounded img-responsive col-3 p-3" src="{{../user.avatar}}">
 			  <div class="container col-8">
 				  <h4 class= "">
-					  <a href="/users/{{user.id}}">{{user.name}}</a>
+					  <a href="/users/{{../user.id}}">{{../user.name}}</a>
 					  <small>{{moment this.createdAt}}</small>
 				  </h4>
 					<p class="text-justify font-weight-light">{{this.description}}</p>
+
 					<ul class="list-unstyled list-inline">
-						<li><a href="#" class=" text-info text-reset">Reply(<strong>{{../user.Replies.length}}</strong>)</a></li>
-						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{../user.LikedTweets.length}}</strong>)</a></li>
+						<li><a href="#" class=" text-info text-reset">Reply(<strong>{{this.Replies.length}}</strong>)</a></li>
+						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{this.LikedUsers.length}}</strong>)</a></li>
+
 					</ul>
 			  </div>
 	      <hr>
-			  {{/each}}
+			{{/each}}
 		  </div>
 
 	  </div>

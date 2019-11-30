@@ -44,71 +44,71 @@ let userController = {
 		req.logout()
 		res.redirect('/signin')
 	},
-	getUser: (req, res) => {
-		userService.getUser(req, res, (data) => {
-			return res.render('profile', data)
-		})
-	},
-	editUser: (req, res) => {
+	// getUser: (req, res) => {
+	// 	userService.getUser(req, res, (data) => {
+	// 		return res.render('profile', data)
+	// 	})
+	// },
+	// editUser: (req, res) => {
 
-		return User.findByPk(req.params.id)
-			.then(user => {
-				return res.render('editProfile', {
-					user: user
-				})
-			})
-	},
-	putUser: (req, res) => {
-		userService.putUser(req, res, (data) => {
-			if (data['status'] === 'success') {
-				req.flash('success_msg', data['message'])
-			}
-			return res.redirect(`/users/${req.params.id}`)
-		})
-	},
-	addFavorite: (req, res) => {
-		userService.addFavorite(req, res, (data) => {
-			return res.redirect('back')
-		})
-	},
-	removeFavorite: (req, res) => {
-		userService.removeFavorite(req, res, (data) => {
-			return res.redirect('back')
-		})
-	},
-	addLike: (req, res) => {
-		userService.addLike(req, res, (data) => {
-			return res.redirect('back')
-		})
-	},
-	removeLike: (req, res) => {
-		userService.removeLike(req, res, (data) => {
-			return res.redirect('back')
-		})
-	},
-	getTopUsers: (req, res) => {
-		userService.getTopUsers(req, res, (data) => {
-			return res.render('topUser', data)
-		})
-	},
-	addFollowing: (req, res) => {
-		userService.addFollowing(req, res, (data) => {
-			return res.redirect('back')
-		})
-		// return Followship.create({
-		// 	followerId: req.user.id,
-		// 	followingId: req.params.userId
-		// })
-		// 	.then((followship) => {
-		// 		return res.redirect('back')
-		// 	})
-	},
+	// 	return User.findByPk(req.params.id)
+	// 		.then(user => {
+	// 			return res.render('editProfile', {
+	// 				user: user
+	// 			})
+	// 		})
+	// },
+	// putUser: (req, res) => {
+	// 	userService.putUser(req, res, (data) => {
+	// 		if (data['status'] === 'success') {
+	// 			req.flash('success_msg', data['message'])
+	// 		}
+	// 		return res.redirect(`/users/${req.params.id}`)
+	// 	})
+	// },
+	// addFavorite: (req, res) => {
+	// 	userService.addFavorite(req, res, (data) => {
+	// 		return res.redirect('back')
+	// 	})
+	// },
+	// removeFavorite: (req, res) => {
+	// 	userService.removeFavorite(req, res, (data) => {
+	// 		return res.redirect('back')
+	// 	})
+	// },
+	// addLike: (req, res) => {
+	// 	userService.addLike(req, res, (data) => {
+	// 		return res.redirect('back')
+	// 	})
+	// },
+	// removeLike: (req, res) => {
+	// 	userService.removeLike(req, res, (data) => {
+	// 		return res.redirect('back')
+	// 	})
+	// },
+	// getTopUsers: (req, res) => {
+	// 	userService.getTopUsers(req, res, (data) => {
+	// 		return res.render('topUser', data)
+	// 	})
+	// },
+	// addFollowing: (req, res) => {
+	// 	userService.addFollowing(req, res, (data) => {
+	// 		return res.redirect('back')
+	// 	})
+	// 	// return Followship.create({
+	// 	// 	followerId: req.user.id,
+	// 	// 	followingId: req.params.userId
+	// 	// })
+	// 	// 	.then((followship) => {
+	// 	// 		return res.redirect('back')
+	// 	// 	})
+	// },
 
-	removeFollowing: (req, res) => {
-		userService.removeFollowing(req, res, (data) => {
-			return res.redirect('back')
-		})
-	}
+	// removeFollowing: (req, res) => {
+	// 	userService.removeFollowing(req, res, (data) => {
+	// 		return res.redirect('back')
+	// 	})
+	// }
 }
 
 module.exports = userController

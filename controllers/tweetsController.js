@@ -25,20 +25,38 @@ const tweetsController = {
 			})
 			user = await User.findByPk('1', {
 				include: [
-					Tweet,
+					{ model: Tweet, include: [
+							{ model: User, as: 'LikedUsers' },
+							Reply
+					]},
 					{ model: Reply, include: Tweet },
-					{ model: Tweet, as: 'LikedTweets' },
+					{ model: Tweet, as: 'LikedTweets'},
 					{ model: User, as: 'Followers' },
 					{ model: User, as: 'Followings' }
 				]
 			})
-			//const isLiked = tweet.LikedUsers.map(d => d.id).includes(req.user.id)
-			console.log('user.Replies', user.Replies.length)
-			console.log('user.LikedTweet', user.LikedTweets.length)
+			// tweetLikedUsers = await Tweet.findAll({
+			// 	where: { UserId: '1'},
+			// 	include: [
+			// 		{ model: User, as: 'LikedUsers' },
+			// 		Reply
+			// 	]
+			// })
+			// tweets= await Tweet.findAll({
+			// 	where: { UserId: '1' },
+			// 	include: [
+			// 		Reply,
+			// 		{ model: User, as: 'LikedUsers' },
+			// 	]
+			// })
+			//console.log('tweets', tweets)
+			console.log('user.Tweets',user.Tweets)
 			res.render('tweets',
 				{
+					user: user,
+					//tweets: tweets,
 					TopFollowers: TopFollowers,
-					user: user
+					//tweetLikedUsersLength: tweetLikedUsers.length
 				})
 
 		} catch (err) {
@@ -51,13 +69,13 @@ const tweetsController = {
 			include: [
 				Tweet,
 				{ model: Reply, include: Tweet },
-				{ model: Tweet, as: 'LikedTweet' },
+				{ model: Tweet, as: 'LikedTweets' },
 				{ model: User, as: 'Followers' },
 				{ model: User, as: 'Followings' }
 			]
 		})
 			.then(user => {
-				console.log('user.Tweets', user.LikedTweet.length)
+				//console.log('user.Tweets', user.LikedTweets.length)
 				res.render('tweet',
 					{
 						user: user
@@ -66,11 +84,11 @@ const tweetsController = {
 	},
 	postTweet: (req, res) => {
 		if (!req.body.text) {
-			callback({ status: 'error', message: "請輸入文字" })
+			return res.redirect('/tweets')
 
 		}
 		if (!req.body.text.length > 140) {
-			callback({ status: 'error', message: "請限制內容在140字以內" })
+			return res.redirect('/tweets')
 
 		}else {
 		  Tweet.create({
