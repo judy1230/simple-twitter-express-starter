@@ -3,6 +3,7 @@
 	  <form action="/tweets" method="POST">
 		  <div class="form-group ">
 			  <textarea class="form-control" id="text" name="text" rows="3" placeholder="在想什麼?"></textarea>
+				<input type="hidden" name="UserId" value="{{user.id}}" />
 			  <button type="submit" class="btn btn-primary float-right mt-2">Tweet</button>
 		  </div>
 	  </form>
@@ -13,24 +14,21 @@
 			  最新推文
 		  </div>
 		  <div class="card-body container row">
-			 {{!-- {{#each user.Tweets}} 要取user.Tweets.length不能使用each疊代--}}
+				{{#each user.Tweets}}
 			  <img class="img-fluid rounded img-responsive col-3 p-3" src="{{user.avatar}}">
 			  <div class="container col-8">
-				  <h4>
+				  <h4 class= "">
 					  <a href="/users/{{user.id}}">{{user.name}}</a>
-					{{#each user.Tweets}}
 					  <small>{{moment this.createdAt}}</small>
 				  </h4>
 					<p class="text-justify font-weight-light">{{this.description}}</p>
-					{{/each}}
 					<ul class="list-unstyled list-inline">
-						<li><a href="#" class=" text-info text-reset">Reply(<strong>{{user.Replies.length}}</strong>)</a></li>
-						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{user.LikedTweet.length}}</strong>)</a></li>
+						<li><a href="#" class=" text-info text-reset">Reply(<strong>{{../user.Replies.length}}</strong>)</a></li>
+						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{../user.LikedTweets.length}}</strong>)</a></li>
 					</ul>
 			  </div>
-
 	      <hr>
-			 {{!-- {{/each}} --}}
+			  {{/each}}
 		  </div>
 
 	  </div>
@@ -39,26 +37,26 @@
 
 			<div class="card col-5">
 				<div class="card-header">
-					熱門推文
+					熱門追蹤
 				</div>
 				<div class="card-body container row">
-					{{#each profile.Tweets}}
+					{{#each TopFollowers}}
 					<div class="col-3">
-						<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
+						<img class="img-fluid rounded img-responsive" src="{{this.avatar}}">
 					</div>
 
 					<div class="container col-8">
 						<h4>
-							<a href="/users/{{../user.id}}">{{../user.name}}</a>
-							<small>{{moment this.createdAt}}</small>
+							<a href="/users/{{this.id}}">{{this.name}}</a>
+							<small>{{moment this.Tweets.createdAt}}</small>
 						</h4>
-						<p class="text-justify font-weight-light">{{this.description}}</p>
+						<p class="text-justify font-weight-light">{{this.introduction}}</p>
 						<div class="container text-right">
 							{{#if this.isFollowed }}
-							<form action="/favorite/{{../user.id}}?_method=DELETE" method="POST"><button type="submit"
+							<form action="/favorite/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
 									class="btn btn-danger">UnFollowed</button></form>
 							{{else}}
-							<form action="/favorite/{{../user.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button></form>
+							<form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button></form>
 							{{/if}}
 						</div>
 					</div>

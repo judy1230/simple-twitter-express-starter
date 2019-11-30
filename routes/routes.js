@@ -27,10 +27,12 @@ const passport = require('../config/passport')
 		res.redirect('/signin')
 	}
 	//get in login page
-router.get('/', (req, res) => res.redirect('/tweets'))
+  router.get('/', (req, res) => res.redirect('/tweets'))
 
 	// //user controller
-	router.get('/tweets', tweetsController.getTweets)
+  router.get('/tweets', tweetsController.getTweets)
+  router.post('/tweets', tweetsController.postTweet)
+  router.get('/tweets/:id/replies', tweetsController.getTweet)
 	// router.get('/restaurants/feeds', authenticated, restController.getFeeds)
 	// router.get('/restaurants/top', authenticated, restController.getTopRestaurants)
 
