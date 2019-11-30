@@ -18,9 +18,11 @@
 			  <div class="container col-8">
 				  <h4>
 					  <a href="/users/{{user.id}}">{{user.name}}</a>
-					  <small>{{moment user.Tweets.createdAt}}</small>
+					{{#each user.Tweets}}
+					  <small>{{moment this.createdAt}}</small>
 				  </h4>
-					<p>{{user.Tweets.description}}</p>
+					<p class="text-justify font-weight-light">{{this.description}}</p>
+					{{/each}}
 					<ul class="list-unstyled list-inline">
 						<li><a href="#" class=" text-info text-reset">Reply(<strong>{{user.Replies.length}}</strong>)</a></li>
 						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{user.LikedTweet.length}}</strong>)</a></li>
@@ -40,7 +42,7 @@
 					熱門推文
 				</div>
 				<div class="card-body container row">
-					{{#each user.Tweets}}
+					{{#each profile.Tweets}}
 					<div class="col-3">
 						<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
 					</div>
@@ -50,7 +52,7 @@
 							<a href="/users/{{../user.id}}">{{../user.name}}</a>
 							<small>{{moment this.createdAt}}</small>
 						</h4>
-						<p>{{this.description}}</p>
+						<p class="text-justify font-weight-light">{{this.description}}</p>
 						<div class="container text-right">
 							{{#if this.isFollowed }}
 							<form action="/favorite/{{../user.id}}?_method=DELETE" method="POST"><button type="submit"
