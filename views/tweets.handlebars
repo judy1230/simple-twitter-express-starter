@@ -13,22 +13,22 @@
 			  最新推文
 		  </div>
 		  <div class="card-body container row">
-			 {{#each user.Tweets}}
-			  <img class="img-fluid rounded img-responsive col-3 p-3" src="{{../user.avatar}}">
+			 {{!-- {{#each user.Tweets}} 要取user.Tweets.length不能使用each疊代--}}
+			  <img class="img-fluid rounded img-responsive col-3 p-3" src="{{user.avatar}}">
 			  <div class="container col-8">
 				  <h4>
-					  <a href="/users/{{../user.id}}">{{../user.name}}</a>
-					  <small>{{moment this.createdAt}}</small>
+					  <a href="/users/{{user.id}}">{{user.name}}</a>
+					  <small>{{moment user.Tweets.createdAt}}</small>
 				  </h4>
-					<p>{{this.description}}</p>
-				  <div class="container row">
-					  <p class="mr-5">Like{{this.LikedTweet.length}}</p>
-					  <p>Reply</p>
-				  </div>
+					<p>{{user.Tweets.description}}</p>
+					<ul class="list-unstyled list-inline">
+						<li><a href="#" class=" text-info text-reset">Reply(<strong>{{user.Replies.length}}</strong>)</a></li>
+						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{user.LikedTweet.length}}</strong>)</a></li>
+					</ul>
 			  </div>
 
 	      <hr>
-			 {{/each}}
+			 {{!-- {{/each}} --}}
 		  </div>
 
 	  </div>
@@ -40,23 +40,23 @@
 					熱門推文
 				</div>
 				<div class="card-body container row">
-					{{#each users}}
+					{{#each user.Tweets}}
 					<div class="col-3">
-						<img class="img-fluid rounded img-responsive" src="{{this.avatar}}">
+						<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
 					</div>
 
 					<div class="container col-8">
 						<h4>
-							<a href="/users/{{this.id}}">{{this.name}}</a>
-							<small>{{moment this.Tweet.createdAt}}</small>
+							<a href="/users/{{../user.id}}">{{../user.name}}</a>
+							<small>{{moment this.createdAt}}</small>
 						</h4>
-						<p>ASDFASDFASDF{{this.Tweet.description}}</p>
+						<p>{{this.description}}</p>
 						<div class="container text-right">
-							{{#if this.isFavorited }}
-							<form action="/favorite/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
+							{{#if this.isFollowed }}
+							<form action="/favorite/{{../user.id}}?_method=DELETE" method="POST"><button type="submit"
 									class="btn btn-danger">UnFollowed</button></form>
 							{{else}}
-							<form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button></form>
+							<form action="/favorite/{{../user.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button></form>
 							{{/if}}
 						</div>
 					</div>

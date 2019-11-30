@@ -1,25 +1,28 @@
 <div class="row">
-	{{#each user.Tweets}}
+	{{!-- {{#each user.Tweets}}要取user.Tweets.length不能使用each疊代 --}}
 	<div class="container col-4">
 		<br>
 		<br>
 		<div class="card">
 			<div class="card-body container">
 				<div class="container">
-					<img class="img-fluid rounded img-responsive col-3 p-3" src="{{../user.avatar}}">
+					<img class="img-fluid rounded img-responsive col-3 p-3" src="{{user.avatar}}">
 					<h4>
-						<p>{{../user.name}}</p>
-						<small>{{../user.introduction}}</small>
+						<p>{{user.name}}</p>
+						<h6 class="text-justify font-weight-light">{{user.introduction}}</h6>
 					</h4>
-					<p>Tweets {{this.length}}</p>
-					<p>Following {{this.length}}</p>
-					<p>Follower {{this.length}}</p>
-					<p>like {{this.length}}</p>
+					<ul class="list-unstyled list-inline">
+						<li><a href="#" class=" text-info text-reset">Tweets(<strong>{{user.Tweets.length}}</strong>)</a></li>
+						<li>Following <strong class="text-monospace text-secondary">{{user.Followings.length}}</strong></li>
+						<li>Follower <strong class="text-monospace text-secondary">{{user.Followers.length}}</strong></li>
+						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{user.LikedTweet.length}}</strong>)</a></li>
+					</ul>
+
 				</div>
 				<form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
 				</form>
 				<hr>
-				{{/each}}
+				{{!-- {{/each}} --}}
 			</div>
 
 		</div>
@@ -53,7 +56,7 @@
 			<div class="row">
 				<h4>Replies</h4>
 				<div class="card-body container row">
-					{{#each user.Tweets}}
+					{{#each user.Replies}}
 					<div class="col-3">
 						<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
 					</div>
@@ -61,9 +64,9 @@
 					<div class="container col-8">
 						<h4>
 							<a href="/users/{{../user.id}}">{{../user.name}}</a>
-							<small>{{moment this.Tweet.createdAt}}</small>
+							<small>{{moment this.createdAt}}</small>
 						</h4>
-						<p>ASDFASDFASDF{{this.Tweet.description}}</p>
+						<p>{{this.comment}}</p>
 					</div>
 					</hr>
 
