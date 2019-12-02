@@ -6,90 +6,29 @@ const Like = db.Like
 const pageLimit = 10
 
 const tweetsController = {
-	getTweets:  async(req, res) => {
-		 console.log('req.user', req.user.id)
-		// User.findByPk(req.params.id, {
-		// 	include: [
-		// 		{
-		// 			model: Tweet, include: [
-		// 				{ model: User, as: 'LikedUsers' },
-		// 				Reply
-		// 			]
-		// 		},
-		// 		{ model: Reply, include: Tweet },
-		// 		{ model: Tweet, as: 'LikedTweets' },
-		// 		{ model: User, as: 'Followers' },
-		// 		{ model: User, as: 'Followings' }
-		// 	]
-		// }).then(user => {
-		// 	User.findAll({
-		// 		include: [
-		// 			{ model: User, as: 'Followers' }
-		// 		]
-		// 	}).then((user,users) => {
-		// 		users.map(user => ({
-		// 			...user.dataValues,
-		// 			//計算追蹤者人數
-		// 			FollowerCount: user.Followers.length,
-		// 			//判斷目前登入使用者是否已追中該User物件
-		// 			//isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
-		// 		}))
-		// 		//依追蹤者人數排列清單
-		// 		users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-		// 	}).then((user, users) => {
-		// 		return res.render('tweets',
-		// 			{
-		// 				user: user,
-		// 				TopFollowers: users,
-		// 			})
-		// 	})
-
-		// })
-
-
-
-
-
-		try {
-			TopFollowers = await User.findAll({
+	getTweets:  (req, res) => {
+			return User.findAll({
 				include: [
-					{ model: User, as: 'Followers' }
+					{ model: User, as: 'Followers' },
+					{ model: User, as: 'Followings' },
 				]
 			}).then(users => {
+				console.log('users', users)
 				users.map(user => ({
 					...user.dataValues,
 					//計算追蹤者人數
 					FollowerCount: user.Followers.length,
 					//判斷目前登入使用者是否已追中該User物件
-					//isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+					isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
 				}))
 				//依追蹤者人數排列清單
 				return users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-			})
-			user = await User.findByPk(req.params.id, {
-				include: [
+			}).then(users => {
+				res.render('tweets',
 					{
-						model: Tweet, include: [
-							{ model: User, as: 'LikedUsers' },
-							Reply
-						]
-					},
-					{ model: Reply, include: Tweet },
-					{ model: Tweet, as: 'LikedTweets' },
-					{ model: User, as: 'Followers' },
-					{ model: User, as: 'Followings' }
-				]
+						TopFollowers: users,
+					})
 			})
-			console.log('user',user)
-			res.render('tweets',
-				{
-					user: user,
-					TopFollowers: TopFollowers,
-				})
-
-		} catch (err) {
-			return console.log(err)
-		}
 
 	},
 	getTweetReplies: (req, res) => {
@@ -103,7 +42,7 @@ const tweetsController = {
 			]
 		})
 			.then(tweet => {
-				console.log('user.Tweet', tweet)
+				//console.log('user.Tweet', tweet)
 				res.render('reply',
 					{
 						tweet: tweet
