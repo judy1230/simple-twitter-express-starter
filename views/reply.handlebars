@@ -15,7 +15,7 @@
 						<li><a href="#" class=" text-info text-reset">Tweets(<strong>{{user.Tweets.length}}</strong>)</a></li>
 						<li>Following <strong class="text-monospace text-secondary">{{user.Followings.length}}</strong></li>
 						<li>Follower <strong class="text-monospace text-secondary">{{user.Followers.length}}</strong></li>
-						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{user.LikedTweet.length}}</strong>)</a></li>
+						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{user.LikedTweets.length}}</strong>)</a></li>
 					</ul>
 
 				</div>
@@ -79,7 +79,7 @@
 				{{/each}}
 			</div>
 		</div>
-		<form action="/tweets" method="POST">
+		<form action="/tweets/{{tweet.id}}/replies" method="POST">
 			<div class="form-group ">
 				<textarea class="form-control" id="text" name="text" rows="3" placeholder="在想什麼?"></textarea>
 				<button type="submit" class="btn btn-primary float-right mt-2">Reply</button>

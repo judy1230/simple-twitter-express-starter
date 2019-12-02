@@ -29,7 +29,8 @@ const tweetsController = {
 			include: [
 				//Reply
 				{ model: Reply, include: Tweet },
-				// { model: Tweet, as: 'LikedTweets' },
+				{ model: User, as:'LikedUsers'}
+			 // { model: Tweet, as: 'LikedTweets' },
 				// { model: User, as: 'Followers' },
 				// { model: User, as: 'Followings' }
 			]
@@ -38,6 +39,7 @@ const tweetsController = {
 				//console.log('user.Tweet', tweet)
 				res.render('reply',
 					{
+						//user: req.user,
 						tweet: tweet
 					})
 			})
@@ -63,7 +65,28 @@ const tweetsController = {
 		}
 
 	},
+	postReplies: (req, res) => {
+		if (!req.body.text) {
+			return res.redirect('/tweets')
 
+		}
+		if (!req.body.text.length > 140) {
+			return res.redirect('back')
+
+		} else {
+			Reply.create({
+				UserId: req.user.id,
+				TweetId: req.params.id,
+				comment: req.body.text,
+			})
+				.then((tweet) => {
+					req.flash('success_msg', '推文成功')
+					return res.redirect('/tweets')
+
+				})
+		}
+
+	},
 }
 
 
