@@ -1,6 +1,8 @@
 const bcrypt = require('bcrypt-nodejs')
 const db = require('../models')
 const User = db.User
+const Tweet = db.Tweet
+const Reply = db.Reply
 const Followship = db.Followship
 const jwt = require('jsonwebtoken')
 const passportJWT = require('passport-jwt')
@@ -50,20 +52,26 @@ let userController = {
 		req.logout()
 		res.redirect('/signin')
 	},
-	// getUser: (req, res) => {
-	// 	userService.getUser(req, res, (data) => {
-	// 		return res.render('profile', data)
-	// 	})
-	// },
-	// editUser: (req, res) => {
-
-	// 	return User.findByPk(req.params.id)
-	// 		.then(user => {
-	// 			return res.render('editProfile', {
-	// 				user: user
-	// 			})
-	// 		})
-	// },
+	getUser: (req, res) => {
+		return User.findByPk(req.params.id, {
+			include: [
+				{
+					model: Tweet, include: [
+						{ model: User, as: 'LikedUsers' },
+						Reply
+					]
+				},
+				{ model: Reply, include: Tweet },
+				{ model: Tweet, as: 'LikedTweets' },
+				{ model: User, as: 'Followers' },
+				{ model: User, as: 'Followings' }
+			]
+		})
+			.then(user => {
+				const isFollowed = user.Followings.map(d => d.id).includes(user.id)
+				return res.render('profile',{ profile: user, isFollowed: isFollowed })
+			})
+	},
 	// putUser: (req, res) => {
 	// 	userService.putUser(req, res, (data) => {
 	// 		if (data['status'] === 'success') {
@@ -82,21 +90,29 @@ let userController = {
 	// 		return res.redirect('back')
 	// 	})
 	// },
-	// addLike: (req, res) => {
-	// 	userService.addLike(req, res, (data) => {
-	// 		return res.redirect('back')
-	// 	})
-	// },
-	// removeLike: (req, res) => {
-	// 	userService.removeLike(req, res, (data) => {
-	// 		return res.redirect('back')
-	// 	})
-	// },
-	// getTopUsers: (req, res) => {
-	// 	userService.getTopUsers(req, res, (data) => {
-	// 		return res.render('topUser', data)
-	// 	})
-	// },
+	addLike: (req, res) => {
+		return Like.create({
+			UserId: req.user.id,
+			RestaurantId: req.params.restaurantId
+		})
+			.then((restaurant) => {
+				return res.redirect('back')
+			})
+	},
+	removeLike: (req, res) => {
+		return Like.findOne({
+			where: {
+				UserId: req.user.id,
+				RestaurantId: req.params.restaurantId
+			}
+		}).then((like) => {
+			like.destroy()
+				.then((tweet) => {
+					return res.redirect('back')
+				})
+		})
+
+	},
 	addFollowing: (req, res) => {
 		return Followship.create({
 			followerId: req.user.id,
