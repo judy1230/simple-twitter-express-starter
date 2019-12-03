@@ -80,17 +80,17 @@ let userController = {
 	addLike: (req, res) => {
 		return Like.create({
 			UserId: req.user.id,
-			RestaurantId: req.params.restaurantId
+			TweetId: req.params.tweetId
 		})
-			.then((restaurant) => {
+			.then((tweet) => {
 				return res.redirect('back')
 			})
 	},
 	removeLike: (req, res) => {
 		return Like.findOne({
 			where: {
-				UserId: req.user.id,
-				RestaurantId: req.params.restaurantId
+				UserId: helpersreq.getUser(req).id,
+				TweetId: req.params.tweetId
 			}
 		}).then((like) => {
 			like.destroy()

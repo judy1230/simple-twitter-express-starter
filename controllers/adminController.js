@@ -5,7 +5,8 @@ const Reply = db.Reply
 const imgur = require('imgur-node-api')
 const IMGUR_CLIENT_ID = '158d5ec5eff6842'
 const fs = require('fs')
-//const adminService = require('./services/adminService.js')
+const helpersreq = require('../_helpers')
+
 
 const adminController = {
 	getTweets: (req, res) => {
@@ -22,7 +23,7 @@ const adminController = {
 			return res.render('admin/dashboard',{
 				tweets: tweets,
 				user: req.user,
-				isAuthenticated: req.isAuthenticated
+				isAuthenticated: helpersreq.ensureAuthenticated(req)
 			})
 		})
 	},
