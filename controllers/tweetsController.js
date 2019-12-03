@@ -8,38 +8,43 @@ const pageLimit = 10
 const Followship = db.Followship
 
 const tweetsController = {
-	getTweets: (req, res) => {
-		return User.findAll({
-			include: [
-				{ model: User, as: 'Followers' }
-			]
-		}).then(users => {
-			users = users.map(user => ({
-				...user.dataValues,
-				FollowerCount: user.Followers.length,
-				isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
-			}))
-			users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
-			return res.render('tweets', { users: users })
-		})
+	getTweets: async (req, res) => {
+		try {
+			users = await User.findAll({
+				include: [
+					{ model: User, as: 'Followers' }
+				]
+			}).then(users => {
+				users = users.map(user => ({
+					...user.dataValues,
+					FollowerCount: user.Followers.length,
+					isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
+				}))
+				users = users.sort((a, b) => b.FollowerCount - a.FollowerCount)
+			})
+
+			localUser = await User.findByPk(req.user.id, {
+				order: [
+					[Tweet, 'createdAt', 'DESC']
+				],
+				include:[Tweet]
+			})
+			return res.render('tweets', { users: users, localUser: localUser })
+		} catch(err) {
+			return console.log(err)
+		}
 
 	},
 	getTweetReplies: (req, res) => {
 		return Tweet.findByPk(req.params.id, {
 			include: [
-				//Reply
 				{ model: Reply, include: Tweet },
 				{ model: User, as:'LikedUsers'}
-			 // { model: Tweet, as: 'LikedTweets' },
-				// { model: User, as: 'Followers' },
-				// { model: User, as: 'Followings' }
 			]
 		})
 			.then(tweet => {
-				//console.log('user.Tweet', tweet)
 				res.render('reply',
 					{
-						//user: req.user,
 						tweet: tweet
 					})
 			})
