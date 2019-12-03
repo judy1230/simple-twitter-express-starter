@@ -2,17 +2,12 @@ const express = require('express');
 const router = express.Router();
 
 const tweetsController = require('../controllers/tweetsController.js')
-//const adminController = require('../controllers/adminController.js')
-//const apiAdminController = require('../controllers/adminController.js')
+const adminController = require('../controllers/adminController.js')
 const userController = require('../controllers/userController.js')
-//const categoryController = require('../controllers/categoryController.js')
-//const commentController = require('../controllers/commentController.js')
 const multer = require('multer')
 const upload = multer({ dest: 'temp/' })
 const passport = require('../config/passport')
 
-
-//module.exports = (router, passport) => {
 const authenticated = (req, res, next) => {
 	if (req.isAuthenticated()) {
 		return next()
@@ -21,7 +16,7 @@ const authenticated = (req, res, next) => {
 }
 const authenticatedAdmin = (req, res, next) => {
 	if (req.isAuthenticated()) {
-		if (req.user.isAdmin) { return next() }
+		if (req.user.role ==='admin') { return next() }
 		return res.redirect('/')
 	}
 	res.redirect('/signin')
@@ -52,24 +47,17 @@ router.delete('tweets/:tweetId/like', authenticated, userController.removeLike)
 // router.put('/users/:id', authenticated, userController.putUser)
  router.get('/users/:id', authenticated, userController.getUser)
 // router.get('/users/:id/edit', authenticated, userController.editUser)
-router.post('/following/:userId', authenticated, userController.addFollowing)
-router.delete('/following/:userId', authenticated, userController.removeFollowing)
+router.post('/users/:userId/following/', authenticated, userController.addFollowing)
+router.delete('/users/:userId/following/', authenticated, userController.removeFollowing)
 
 
 // //get in admin
-// router.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
-// router.get('/admin/restaurants', adminController.getRestaurants)
-
-// //admin config
-// //categories
-// router.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
-// router.post('/admin/categories', authenticatedAdmin, categoryController.postCategories)
-// router.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
-// router.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
-// router.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
+ router.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/tweets'))
+router.get('/admin/tweets', authenticatedAdmin,adminController.getTweets)
+ router.delete('/admin/tweets/:id', authenticatedAdmin, adminController.deleteTweet)
 
 // //admin manage users
-// router.get('/admin/users', authenticatedAdmin, adminController.editUsers)
+router.get('/admin/users', authenticatedAdmin, adminController.getUsers)
 // router.get('/admin/setUser/:id', authenticatedAdmin, adminController.putUsers)
 
 // //restaurants
@@ -79,10 +67,10 @@ router.delete('/following/:userId', authenticated, userController.removeFollowin
 // router.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
 // router.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
 // router.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
-// router.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
+
 // //users sign up
-// router.get('/signup', userController.signUpPage)
-// router.post('/signup', userController.signUp)
+router.get('/signup', userController.signUpPage)
+router.post('/signup', userController.signUp)
 // //users sing in
 router.get('/signin', userController.signInPage)
 router.post('/signin', passport.authenticate('local', {

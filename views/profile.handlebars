@@ -19,8 +19,13 @@
 					</ul>
 
 				</div>
-				<form action="/favorite/{{profile.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
-				</form>
+					{{#if this.isFollowed }}
+					<form action="/users/{{profile.id}}/following/?_method=DELETE" method="POST"><button type="submit"
+							class="btn btn-danger">UnFollowed</button></form>
+					{{else}}
+					<form action="/users/{{profile.id}}/following" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
+					</form>
+					{{/if}}
 				<hr>
 				{{!-- {{/each}} --}}
 			</div>

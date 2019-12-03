@@ -56,10 +56,10 @@
 			<p class="text-justify font-weight-light">{{this.introduction}}</p>
 			<div class="container text-right">
 				{{#if this.isFollowed }}
-				<form action="/following/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
+				<form action="/users/{{this.id}}/following/?_method=DELETE" method="POST"><button type="submit"
 					class="btn btn-danger">UnFollowed</button></form>
 				{{else}}
-				<form action="/following/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
+				<form action="/users/{{this.id}}/following" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
 				</form>
 				{{/if}}
 			</div>
