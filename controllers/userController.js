@@ -54,12 +54,15 @@ let userController = {
 	},
 	getUser: (req, res) => {
 		return User.findByPk(req.params.id, {
+			order: [
+				[Tweet, 'createdAt','DESC']
+			],
 			include: [
-				{
-					model: Tweet, include: [
+				{ model: Tweet,
+					include: [
 						{ model: User, as: 'LikedUsers' },
-						Reply
-					]
+						Reply,
+					],
 				},
 				{ model: Reply, include: Tweet },
 				{ model: Tweet, as: 'LikedTweets' },
@@ -67,29 +70,13 @@ let userController = {
 				{ model: User, as: 'Followings' }
 			]
 		})
-			.then(user => {
+			.then((user) => {
+				//user.Tweets.findAll({ order: [['createdAt', 'ASC']],})
+				console.log('user.Tweets', user.Tweets)
 				const isFollowed = user.Followings.map(d => d.id).includes(user.id)
 				return res.render('profile',{ profile: user, isFollowed: isFollowed })
 			})
 	},
-	// putUser: (req, res) => {
-	// 	userService.putUser(req, res, (data) => {
-	// 		if (data['status'] === 'success') {
-	// 			req.flash('success_msg', data['message'])
-	// 		}
-	// 		return res.redirect(`/users/${req.params.id}`)
-	// 	})
-	// },
-	// addFavorite: (req, res) => {
-	// 	userService.addFavorite(req, res, (data) => {
-	// 		return res.redirect('back')
-	// 	})
-	// },
-	// removeFavorite: (req, res) => {
-	// 	userService.removeFavorite(req, res, (data) => {
-	// 		return res.redirect('back')
-	// 	})
-	// },
 	addLike: (req, res) => {
 		return Like.create({
 			UserId: req.user.id,
