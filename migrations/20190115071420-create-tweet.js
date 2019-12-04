@@ -16,18 +16,18 @@ module.exports = {
           key: 'id'
         }
       },
-        description: {
-          type: Sequelize.TEXT
-        },
-        createdAt: {
-          allowNull: false,
-          type: Sequelize.DATE
-        },
-        updatedAt: {
-          allowNull: false,
-          type: Sequelize.DATE
-        }
-      })
+      description: {
+        type: Sequelize.TEXT
+      },
+      createdAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      },
+      updatedAt: {
+        allowNull: false,
+        type: Sequelize.DATE
+      }
+    })
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Tweets');

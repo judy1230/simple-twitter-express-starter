@@ -6,6 +6,7 @@ const Reply = db.Reply
 const Like = db.Like
 const pageLimit = 10
 const Followship = db.Followship
+const helpersreq = require('../_helpers')
 
 const tweetsController = {
 	getTweets: async (req, res) => {
@@ -21,12 +22,22 @@ const tweetsController = {
 					isFollowed: req.user.Followings.map(d => d.id).includes(user.id)
 				}))
 			})
-			localUser = await User.findByPk(req.user.id, {
+			localUser = await User.findByPk( helpersreq.getUser(req).id, {
 				order: [
 					[Tweet, 'createdAt', 'DESC']
 				],
-				include: [Tweet]
+				include: [
+					{
+						model: Tweet,
+						include: [
+							{ model: User, as: 'LikedUsers' },
+							{ model: Reply, include: Tweet },
+						],
+					},
+				]
+
 			})
+			//console.log('localUser', localUser)
 			return res.render('tweets', { users, localUser })
 		} catch (err) {
 			return console.log(err)
@@ -78,7 +89,7 @@ const tweetsController = {
 
 		} else {
 			Reply.create({
-				UserId: req.user.id,
+				UserId: helpers.getUser(req).id,
 				TweetId: req.params.id,
 				comment: req.body.text,
 			})

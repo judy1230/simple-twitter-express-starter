@@ -102,7 +102,7 @@ let userController = {
 	},
 	addFollowing: (req, res) => {
 		return Followship.create({
-			followerId: req.user.id,
+			followerId: helpers.getUser(req),
 			followingId: req.params.userId
 		})
 			.then((followship) => {
@@ -113,7 +113,7 @@ let userController = {
 	removeFollowing: (req, res) => {
 		return Followship.findOne({
 			where: {
-				followerId: req.user.id,
+				followerId: helpers.getUser(req),
 				followingId: req.params.userId
 			}
 		})

@@ -12,10 +12,12 @@
 						<h6 class="text-justify font-weight-light">{{profile.introduction}}</h6>
 					</h4>
 					<ul class="list-unstyled list-inline">
-						<li><a href="#" class=" text-info text-reset">Tweets(<strong>{{profile.Tweets.length}}</strong>)</a></li>
+						<li>Tweets <strong>{{profile.Tweets.length}}</strong></a></li>
 						<li>Following <strong class="text-monospace text-secondary">{{profile.Followings.length}}</strong></li>
 						<li>Follower <strong class="text-monospace text-secondary">{{profile.Followers.length}}</strong></li>
-						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{profile.LikedTweets.length}}</strong>)</a></li>
+						<form action="/users/{{this.id}}/like" method="POST"><li>Like <strong>{{profile.LikedTweets.length}}</strong></li>
+						</form>
+
 					</ul>
 
 				</div>

@@ -22,13 +22,12 @@ const adminController = {
 		}).then(tweets => {
 			return res.render('admin/dashboard',{
 				tweets: tweets,
-				user: req.user,
+				user: helpersreq.getUser(req),
 				isAuthenticated: helpersreq.ensureAuthenticated(req)
 			})
 		})
 	},
 	deleteTweet: (req, res) => {
-		console.log('/////////////////////////hello//////////////////////////////////')
 		return Tweet.findByPk(req.params.id)
 			.then((tweet) => {
 				console.log('tweet', tweet)
@@ -40,7 +39,6 @@ const adminController = {
 	},
 
 	getUsers: (req, res) => {
-		console.log('////////////////////hello////////////')
 		return User.findAll({
 			order: [
 				['id', 'ASC'],

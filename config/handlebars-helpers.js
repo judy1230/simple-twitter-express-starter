@@ -11,3 +11,4 @@ module.exports = {
 		return moment(a).fromNow()
 	}
 }
+
