@@ -37,6 +37,7 @@ describe('# Like Model', () => {
     before(() => {
       Like.associate({ User })
       Like.associate({ Tweet })
+
     })
 
     it('should belong to user', (done) => {
@@ -56,10 +57,12 @@ describe('# Like Model', () => {
     it('create', (done) => {
       db.Like.create({}).then((like) => {
         data = like
+        console.log('like',like)
         done()
       })
     })
     it('read', (done) => {
+      console.log('like', data)
         db.Like.findByPk(data.id).then((like) => {
           expect(data.id).to.be.equal(like.id)
           done()

@@ -34,8 +34,8 @@
 							<form action="/tweets/{{this.id}}/like/?_method=DELETE" method="POST" class="ml-3 "><button type="submit"
 									class="btn btn-outline-danger btn-sm">Like({{this.LikedUsers.length}})</button></form>
 							{{else}}
-							<form action="/tweets/{{this.id}}/like" method="POST" class="ml-2 "><button type="submit"
-									class="btn btn-outline-info btn-sm">Like(<strong>{{this.LikedUsers.length}}</strong>)</button>
+							<form action="/tweets/{{this.id}}/like" method="POST" class="ml-2"><button type="submit"
+									class="btn btn-outline-info btn-sm">Like <strong>{{this.LikedUsers.length}}</strong></button>
 							</form>
 							{{/if}}
 						</li>
@@ -73,7 +73,7 @@
 	</div>
 	<br /><br />
 
-<div class="container card col-5 ">
+<div class="container card col-5" style="height: auto">
 	<div class="card-header">
 		Popular
 	</div>
