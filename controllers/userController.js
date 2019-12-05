@@ -3,12 +3,14 @@ const db = require('../models')
 const User = db.User
 const Tweet = db.Tweet
 const Reply = db.Reply
+const Like = db.Like
 const Followship = db.Followship
+const helpersreq = require('../_helpers')
 const jwt = require('jsonwebtoken')
 const passportJWT = require('passport-jwt')
 const ExtractJwt = passportJWT.ExtractJwt
 const JwtStrategy = passportJWT.Strategy
-const Like = db.Like
+
 
 
 let userController = {
@@ -71,15 +73,13 @@ let userController = {
 			]
 		})
 			.then((user) => {
-				//user.Tweets.findAll({ order: [['createdAt', 'ASC']],})
-				console.log('user.Tweets', user.Tweets)
 				const isFollowed = user.Followings.map(d => d.id).includes(user.id)
-				return res.render('profile',{ profile: user, isFollowed: isFollowed })
+				return res.render('profile', { profile: user, isFollowed: isFollowed })
 			})
 	},
 	addLike: (req, res) => {
 		return Like.create({
-			UserId: req.user.id,
+			UserId: helpersreq.getUser(req).id,
 			TweetId: req.params.tweetId
 		})
 			.then((tweet) => {
@@ -93,8 +93,9 @@ let userController = {
 				TweetId: req.params.tweetId
 			}
 		}).then((like) => {
+			console.log('/////////////////////////like', like)
 			like.destroy()
-				.then((tweet) => {
+				.then((like) => {
 					return res.redirect('back')
 				})
 		})
@@ -102,7 +103,7 @@ let userController = {
 	},
 	addFollowing: (req, res) => {
 		return Followship.create({
-			followerId: helpers.getUser(req),
+			followerId: helpersreq.getUser(req).id,
 			followingId: req.params.userId
 		})
 			.then((followship) => {
@@ -113,7 +114,7 @@ let userController = {
 	removeFollowing: (req, res) => {
 		return Followship.findOne({
 			where: {
-				followerId: helpers.getUser(req),
+				followerId: helpersreq.getUser(req).id,
 				followingId: req.params.userId
 			}
 		})

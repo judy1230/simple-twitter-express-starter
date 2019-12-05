@@ -4,6 +4,7 @@ var chai = require('chai')
 var request = require('supertest')
 var sinon = require('sinon')
 var app = require('../../app')
+let router = require('../../routes/routes')
 var helpers = require('../../_helpers');
 var should = chai.should()
 const db = require('../../models')
@@ -12,7 +13,7 @@ describe('# user request', () => {
 
   context('# tweets', () => {
     before(async() => {
-      
+
       this.ensureAuthenticated = sinon.stub(
         helpers, 'ensureAuthenticated'
       ).returns(true);
@@ -31,7 +32,7 @@ describe('# user request', () => {
 
     describe('go to current_user page', () => {
       it('will show current users tweets', (done) => {
-        request(app)
+        request(router)
           .get('/users/1/tweets')
           .set('Accept', 'application/json')
           .expect(200)
@@ -44,7 +45,7 @@ describe('# user request', () => {
     })
     describe('go to other user page', () => {
       it('will show other users tweets', (done) => {
-        request(app)
+        request(router)
           .get('/users/2/tweets')
           .set('Accept', 'application/json')
           .expect(200)
@@ -57,7 +58,7 @@ describe('# user request', () => {
     })
 
     after(async () => {
-      
+
       this.ensureAuthenticated.restore();
       this.getUser.restore();
 
@@ -68,7 +69,7 @@ describe('# user request', () => {
 
   context('# edit', () => {
     before(async() => {
-      
+
       this.ensureAuthenticated = sinon.stub(
         helpers, 'ensureAuthenticated'
       ).returns(true);
@@ -103,7 +104,7 @@ describe('# user request', () => {
     })
 
     after(async () => {
-      
+
       this.ensureAuthenticated.restore();
       this.getUser.restore();
       await db.User.destroy({where: {},truncate: true})
@@ -112,7 +113,7 @@ describe('# user request', () => {
 
   context('#update', () => {
     before(async() => {
-      
+
       this.ensureAuthenticated = sinon.stub(
         helpers, 'ensureAuthenticated'
       ).returns(true);
@@ -140,7 +141,7 @@ describe('# user request', () => {
     })
 
     after(async () => {
-      
+
       this.ensureAuthenticated.restore();
       this.getUser.restore();
       await db.User.destroy({where: {},truncate: true})
@@ -149,7 +150,7 @@ describe('# user request', () => {
 
   context('#followings #followers', () => {
     before(async() => {
-      
+
       this.ensureAuthenticated = sinon.stub(
         helpers, 'ensureAuthenticated'
       ).returns(true);
@@ -218,7 +219,7 @@ describe('# user request', () => {
     })
 
     after(async () => {
-      
+
       this.ensureAuthenticated.restore();
       this.getUser.restore();
       await db.User.destroy({where: {},truncate: true})
@@ -229,7 +230,7 @@ describe('# user request', () => {
 
   context('#likes', () => {
     before(async() => {
-      
+
       this.ensureAuthenticated = sinon.stub(
         helpers, 'ensureAuthenticated'
       ).returns(true);
@@ -256,13 +257,13 @@ describe('# user request', () => {
     })
 
     after(async () => {
-      
+
       this.ensureAuthenticated.restore();
       this.getUser.restore();
       await db.User.destroy({where: {},truncate: true})
       await db.Tweet.destroy({where: {},truncate: true})
       await db.Like.destroy({where: {},truncate: true})
     })
-  })
+   })
 
-});
+})

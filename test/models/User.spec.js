@@ -55,6 +55,10 @@ describe('# User Model', () => {
       expect(User.hasMany).to.have.been.calledWith(Like)
       done()
     })
+    // it('should have Tweets as LikedTweets', (done) => {
+    //   expect(User.belongsToMany).to.have.been.calledWith(Tweet)
+    //   done()
+    // })
     it('should have many followships', (done) => {
       expect(User.belongsToMany).to.have.been.calledWith(User)
       done()

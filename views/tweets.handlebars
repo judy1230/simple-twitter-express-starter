@@ -14,18 +14,33 @@
 				最新推文
 			</div>
 			<div class="card-body container row">
-				{{#each localUser.Tweets}}
-				<img class="img-fluid rounded img-responsive col-3 p-3" src="{{../user.avatar}}">
+				{{#each tweets}}
+				<img class="img-fluid rounded img-responsive col-3 p-3" src="{{this.User.avatar}}">
 				<div class="container col-8">
 					<h4 class="">
-						<a href="/users/{{../user.id}}">{{../user.name}}</a>
+						<a href="/users/{{this.User.id}}/tweets">{{this.User.name}}</a>
 						<small>{{moment this.createdAt}}</small>
 					</h4>
 					<p class="text-justify font-weight-light">{{this.description}}</p>
 
-					<ul class="list-unstyled list-inline">
+					<ul class="list-unstyled list-inline row">
 						<li><a href="/tweets/{{this.id}}/replies" class=" text-info text-reset">Reply(<strong>{{this.Replies.length}}</strong>)</a></li>
-						<li><a action="/tweets/{{this.id}}/like" method="POST" class=" text-danger text-reset">Like(<strong>{{this.LikedUsers.length}}</strong>)</a></li>
+
+						{{!-- <li><a
+							class=" text-danger text-reset">Like(<strong>{{this.LikedUsers.length}}</strong>)</a></li> --}}
+
+						<li>
+							{{#if this.isLiked }}
+							<form action="/tweets/{{this.id}}/like/?_method=DELETE" method="POST" class="ml-3 "><button type="submit"
+									class="btn btn-outline-danger btn-sm">Like({{this.LikedUsers.length}})</button></form>
+							{{else}}
+							<form action="/tweets/{{this.id}}/like" method="POST" class="ml-2 "><button type="submit"
+									class="btn btn-outline-info btn-sm">Like(<strong>{{this.LikedUsers.length}}</strong>)</button>
+							</form>
+							{{/if}}
+						</li>
+
+
 
 					</ul>
 				</div>
@@ -34,6 +49,27 @@
 			</div>
 
 		</div>
+			<nav aria-label="Page navigation example">
+				<ul class="pagination">
+					<li class="page-item">
+						<a class="page-link" href="/tweets?page={{prev}}" aria-label="Previous">
+							<span aria-hidden="true">&laquo;</span>
+						</a>
+					</li>
+					{{#each totalPage}}
+					{{#ifCond this ../page}}
+					<li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+					{{else}}
+					<li class="page-item"><a class="page-link"
+							href="/tweets?page={{this}}">{{this}}</a></li>
+					{{/ifCond}}
+					{{/each}}
+					<a class="page-link" href="/tweets?page={{next}}" aria-label="Next">
+						<span aria-hidden="true">&raquo;</span>
+					</a>
+					</li>
+				</ul>
+			</nav>
 	</div>
 	<br /><br />
 
@@ -50,7 +86,7 @@
 
 		<div class="container col-8">
 			<h4>
-				<a href="/users/{{this.id}}">{{this.name}}</a>
+				<a href="/users/{{this.id}}/tweets">{{this.name}}</a>
 				<small>{{moment this.Tweets.createdAt}}</small>
 			</h4>
 			<p class="text-justify font-weight-light">{{this.introduction}}</p>
@@ -72,5 +108,7 @@
 	</div>
 	{{/each}}
 
+
 </div>
+
 
