@@ -17,7 +17,7 @@ const helpersreq = require('./_helpers')
 app.engine('handlebars', handlebars({
 	defaultLayout: 'main',
 	helpers: require('./config/handlebars-helpers.js'),
-	helpersreq:require('./_helpers')
+	//helpersreq:require('./_helpers')
 }))
 
 app.set('view engine', 'handlebars')

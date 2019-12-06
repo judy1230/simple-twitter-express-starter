@@ -73,12 +73,7 @@ let userController = {
 			]
 		})
 			.then((user) => {
-
-				// const isFollowed = user.Followings.map(d => d.id).includes(user.id)
-
 				const isFollowed = helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id)
-				console.log('isFollowed', isFollowed)
-				console.log('user.isFollowed', user.isFollowed)
 				return res.render('profile', {
 					profile: user,
 					localUser: helpersreq.getUser(req),
@@ -92,7 +87,7 @@ let userController = {
 			TweetId: req.params.tweetId
 		})
 			.then((tweet) => {
-				return res.redirect('back')
+				return res.redirect('/tweets')
 			})
 	},
 	removeLike: (req, res) => {
@@ -102,30 +97,24 @@ let userController = {
 				TweetId: req.params.tweetId
 			}
 		}).then((like) => {
-			console.log('/////////////////////////like', like)
 			like.destroy()
 				.then((like) => {
-					return res.redirect('back')
+					return res.redirect('/tweets')
 				})
 		})
 
 	},
 	addFollowing: (req, res) => {
-		console.log('helpersreq.getUser(req).id', typeof(helpersreq.getUser(req).id))
-		console.log('req.params.userId', typeof(req.params.userId))
-		if (helpersreq.getUser(req).id === parseInt(req.params.userId)) {
+
+		if (helpersreq.getUser(req).id == req.body.id) {
 			return res.redirect('/tweets')
 		}
 		return Followship.create({
 			followerId: helpersreq.getUser(req).id,
-			followingId: req.params.userId
+			followingId: req.body.id
 		})
-			.then((followship) => {
-				if (followship.followerId ===  followship.followingId) {
-					followship.destroy()
-					return res.redirect('/tweets')
-				}
-				return res.redirect('back')
+			.then(() => {
+				return res.redirect('/tweets')
 			})
 	},
 
@@ -133,13 +122,13 @@ let userController = {
 		return Followship.findOne({
 			where: {
 				followerId: helpersreq.getUser(req).id,
-				followingId: req.params.userId
+				followingId: req.params.id
 			}
 		})
 			.then((followship) => {
 				followship.destroy()
 					.then((followship) => {
-						return res.redirect('back')
+						return res.redirect('/tweets')
 					})
 			})
 	}

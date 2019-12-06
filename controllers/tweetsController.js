@@ -4,7 +4,7 @@ const User = db.User
 const Tweet = db.Tweet
 const Reply = db.Reply
 const Like = db.Like
-const pageLimit = 4
+const pageLimit = 10
 const Followship = db.Followship
 const helpersreq = require('../_helpers')
 
@@ -21,8 +21,6 @@ const tweetsController = {
 					{ model: User, as: 'Followings' },
 				]
 			}).then(users => {
-				//console.log('users', users)
-				//console.log('users.Followings', users.Followings)
 			  return users.map(user => ({
 					...user.dataValues,
 					FollowerCount: user.Followers.length,
@@ -30,6 +28,9 @@ const tweetsController = {
 				}))
 			})
 			tweets = await Tweet.findAndCountAll({
+				order: [
+					['updatedAt', 'DESC']
+				],
 				include: [
 					User,
 					{ model: User, as: 'LikedUsers' },
@@ -51,10 +52,7 @@ const tweetsController = {
 					}))
 					return { data, page, pages, totalPage, prev, next}
 				})
-			//console.log('tweets.User', tweets.data)
-			//console.log('users', users)
-			//console.log('localUser', helpersreq.getUser(req))
-			//console.log('users', users)
+			console.log('tweets.data', tweets.data.length)
 			return res.render('tweets', {
 				users,
 				isFollowed: users.isFollowed,

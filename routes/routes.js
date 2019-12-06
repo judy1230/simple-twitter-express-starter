@@ -32,10 +32,10 @@ router.post('/tweets', authenticated,tweetsController.postTweet)
 router.get('/tweets/:id/replies', authenticated,tweetsController.getTweetReplies)
 router.post('/tweets/:id/replies', authenticated, tweetsController.postReplies)
 router.post('/tweets/:tweetId/like', authenticated, userController.addLike)
-router.delete('/tweets/:tweetId/like', authenticated, userController.removeLike)
+router.delete('/tweets/:tweetId/unlike', authenticated, userController.removeLike)
 router.get('/users/:id/tweets', authenticated, userController.getUser)
-router.post('/followships/:userId', authenticated, userController.addFollowing)
-router.delete('/followships/:userId', authenticated, userController.removeFollowing)
+router.post('/followships', authenticated, userController.addFollowing)
+router.delete('/followships/:id', authenticated, userController.removeFollowing)
 
 
 // //get in admin

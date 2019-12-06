@@ -65,16 +65,6 @@ const adminController = {
 
 		})
 	},
-	// putUsers: (req, res) => {
-	// 	return User.findByPk(req.params.id).then(user => {
-	// 		user.update({
-	// 			isAdmin: !user.isAdmin
-	// 		})
-	// 		user.isAdmin ? Role = 'Admin' : Role ='User'
-	// 		req.flash('success_msg', `${user.name} is successfully set as ${Role}`)
-	// 		return res.redirect('/admin/users')
-	// 	})
-	// }
-
+	
 }
 module.exports = adminController

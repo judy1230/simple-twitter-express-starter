@@ -31,7 +31,7 @@
 
 						<li>
 							{{#if this.isLiked }}
-							<form action="/tweets/{{this.id}}/like/?_method=DELETE" method="POST" class="ml-3 "><button type="submit"
+							<form action="/tweets/{{this.id}}/unlike/?_method=DELETE" method="POST" class="ml-3 "><button type="submit"
 									class="btn btn-outline-danger btn-sm">Like({{this.LikedUsers.length}})</button></form>
 							{{else}}
 							<form action="/tweets/{{this.id}}/like" method="POST" class="ml-2"><button type="submit"
@@ -96,8 +96,9 @@
 			<form action="/followships/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
 					class="btn btn-danger">UnFollowed</button></form>
 			  {{else}}
-			<form action="/followships/{{this.id}}" method="POST"><button type="submit"
-					class="btn btn-primary">Follow</button>
+			<form action="/followships" method="POST">
+			<input type="number" name="id" value="{{this.id}}" class="d-none">
+			<button type="submit"class="btn btn-primary">Follow</button>
 			</form>
 			  {{/if}}
 			{{!-- {{else}}

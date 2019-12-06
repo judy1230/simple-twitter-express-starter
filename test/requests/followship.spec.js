@@ -1,3 +1,5 @@
+process.env.NODE_ENV = 'test'
+
 var chai = require('chai')
 var request = require('supertest')
 var sinon = require('sinon')
@@ -11,7 +13,7 @@ describe('# followship request', () => {
   context('#create', () => {
     describe('when user1 wants to follow user2', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -34,7 +36,7 @@ describe('# followship request', () => {
             if (err) return done(err);
             db.User.findByPk(1,{include: [
                 { model: db.User, as: 'Followers' },
-                { model: db.User, as: 'Followings' } 
+                { model: db.User, as: 'Followings' }
               ]}).then(user => {
               user.Followings.length.should.equal(0)
               return done();
@@ -44,7 +46,7 @@ describe('# followship request', () => {
 
       it('will show followings', (done) => {
         request(app)
-          .post('/followships')
+          .post('/followships/2')
           .send('id=2')
           .set('Accept', 'application/json')
           .expect(302)
@@ -52,7 +54,7 @@ describe('# followship request', () => {
             if (err) return done(err);
             db.User.findByPk(1,{include: [
                 { model: db.User, as: 'Followers' },
-                { model: db.User, as: 'Followings' } 
+                { model: db.User, as: 'Followings' }
               ]}).then(user => {
               user.Followings.length.should.equal(1)
               return done();
@@ -61,7 +63,7 @@ describe('# followship request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
@@ -73,7 +75,7 @@ describe('# followship request', () => {
   context('#destroy', () => {
     describe('when user1 wants to unfollow user2', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -96,7 +98,7 @@ describe('# followship request', () => {
             if (err) return done(err);
             db.User.findByPk(1,{include: [
                 { model: db.User, as: 'Followers' },
-                { model: db.User, as: 'Followings' } 
+                { model: db.User, as: 'Followings' }
               ]}).then(user => {
               user.Followings.length.should.equal(0)
               return done();
@@ -105,7 +107,7 @@ describe('# followship request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
