@@ -21,8 +21,8 @@
 					</ul>
 
 				</div>
-				{{#ifEquals profile.id res.locals.user }}
-					{{#if profile.isFollowed }}
+				{{#ifNotEquals profile.id localUser.id }}
+					{{#if this.isFollowed }}
 					<form action="/users/{{profile.id}}/following/?_method=DELETE" method="POST"><button type="submit"
 							class="btn btn-danger">UnFollowed</button></form>
 					{{else}}
@@ -30,10 +30,10 @@
 					</form>
 					{{/if}}
 				{{else}}
-				<form action="/users/{{req.user.id}}/edit/?_method=PUT" method="POST"><button type="submit"
+				<form action="/users/{{localUser.id}}/edit/?_method=PUT" method="POST"><button type="submit"
 						class="btn btn-info">Edit Profile</button></form>
 				<hr>
-				{{/ifEquals}}
+				{{/ifNotEquals}}
 			</div>
 
 		</div>

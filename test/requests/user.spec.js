@@ -32,7 +32,7 @@ describe('# user request', () => {
 
     describe('go to current_user page', () => {
       it('will show current users tweets', (done) => {
-        request(router)
+        request(app)
           .get('/users/1/tweets')
           .set('Accept', 'application/json')
           .expect(200)
@@ -45,7 +45,7 @@ describe('# user request', () => {
     })
     describe('go to other user page', () => {
       it('will show other users tweets', (done) => {
-        request(router)
+        request(app)
           .get('/users/2/tweets')
           .set('Accept', 'application/json')
           .expect(200)

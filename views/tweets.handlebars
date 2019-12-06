@@ -91,15 +91,20 @@
 			</h4>
 			<p class="text-justify font-weight-light">{{this.introduction}}</p>
 			<div class="container text-right">
-
-				{{#if this.isFollowed }}
-				<form action="/users/{{this.id}}/following/?_method=DELETE" method="POST"><button type="submit"
+			{{#ifNotEquals this.id ../localUser.id }}
+			  {{#if isFollowed }}
+			<form action="/users/{{this.id}}/following/?_method=DELETE" method="POST"><button type="submit"
 					class="btn btn-danger">UnFollowed</button></form>
-				{{else}}
-				<form action="/users/{{this.id}}/following" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
-				</form>
-				{{/if}}
-
+			  {{else}}
+			<form action="/users/{{this.id}}/following" method="POST"><button type="submit"
+					class="btn btn-primary">Follow</button>
+			</form>
+			  {{/if}}
+			{{else}}
+			  <form action="/users/{{../localUser.id}}/edit/?_method=PUT" method="POST"><button type="submit" class="btn btn-info">Edit
+					</button></form>
+			<hr>
+			{{/ifNotEquals}}
 			</div>
 		</div>
 		</hr>

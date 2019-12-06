@@ -10,6 +10,7 @@ const passport = require('../config/passport')
 const helpersreq = require('../_helpers')
 
 const authenticated = (req, res, next) => {
+	console.log(req.user)
 	if (helpersreq.ensureAuthenticated(req)) {
 		return next()
 	}

@@ -18,13 +18,15 @@ const tweetsController = {
 			users = await User.findAll({
 				include: [
 					{ model: User, as: 'Followers' },
+					{ model: User, as: 'Followings' },
 				]
 			}).then(users => {
-				return users.map(user => ({
+				console.log('users', users)
+				console.log('users.Followings', users.Followings)
+			  return users.map(user => ({
 					...user.dataValues,
 					FollowerCount: user.Followers.length,
-					isFollowed: helpersreq.getUser(req).Followings.map(d => d.id)
-						.includes(user.id),
+					isFollowed: helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id)
 				}))
 			})
 			tweets = await Tweet.findAndCountAll({
@@ -36,7 +38,6 @@ const tweetsController = {
 				where: whereQuery, offset: offset, limit: pageLimit
 			})
 				.then(result => {
-					//console.log('result', result)
 					let page = Number(req.query.page) || 1
 					let pages = Math.ceil(result.count / pageLimit)
 					let totalPage = Array.from({ length: pages }).map((item, index) => index + 1)
@@ -50,41 +51,20 @@ const tweetsController = {
 					}))
 					return { data, page, pages, totalPage, prev, next}
 				})
-			console.log('tweets.User', tweets.data)
+			//console.log('tweets.User', tweets.data)
+			//console.log('users', users)
+			//console.log('localUser', helpersreq.getUser(req))
+			//console.log('users', users)
 			return res.render('tweets', {
 				users,
+				isFollowed: users.isFollowed,
+				localUser: helpersreq.getUser(req),
 				tweets: tweets.data,
 				page: tweets.page,
 				totalPage: tweets.totalPage,
 				prev: tweets.prev,
-				next: tweets.next
+				next: tweets.next,
 			})
-
-
-			// localUser = await User.findByPk( helpersreq.getUser(req).id, {
-			// 	order: [
-			// 		[Tweet, 'createdAt', 'DESC']
-			// 	],
-			// 	include: [
-			// 		{
-			// 			model: Tweet,
-			// 			include: [
-			// 				{ model: User, as: 'LikedUsers' },
-			// 				{ model: Reply, include: Tweet },
-			// 			],
-			// 		},
-			// 	]
-
-			// 	})
-				//	.then(user => {
-
-			// 	return ({
-			// 		user,
-			// 		// isLiked: helpersreq.getUser(req).LikedUsers.map(d => d.id)
-			// 		// 	.includes(user.id)
-			// 	})
-			// })
-			return res.render('tweets', { users, localUser })
 		} catch (err) {
 			return console.log(err)
 		}

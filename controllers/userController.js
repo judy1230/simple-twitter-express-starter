@@ -73,8 +73,17 @@ let userController = {
 			]
 		})
 			.then((user) => {
-				const isFollowed = user.Followings.map(d => d.id).includes(user.id)
-				return res.render('profile', { profile: user, isFollowed: isFollowed })
+
+				// const isFollowed = user.Followings.map(d => d.id).includes(user.id)
+
+				const isFollowed = helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id)
+				console.log('isFollowed', isFollowed)
+				console.log('user.isFollowed', user.isFollowed)
+				return res.render('profile', {
+					profile: user,
+					localUser: helpersreq.getUser(req),
+					isFollowed
+				})
 			})
 	},
 	addLike: (req, res) => {

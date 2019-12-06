@@ -11,9 +11,11 @@ module.exports = {
 	moment: function (a) {
 		return moment(a).fromNow()
 	},
-	ifEquals: function (arg1, arg2, options) {
+	ifNotEquals: function (arg1, arg2, options) {
+		console.log('arg1', arg1)
+		console.log('arg2', arg2)
 
-		return (arg1 == !arg2) ? options.fn(this) : options.inverse(this)
-	}
+		return (arg1 === arg2) ? options.inverse(this): options.fn(this)
+	},
 }
 
