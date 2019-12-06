@@ -111,11 +111,20 @@ let userController = {
 
 	},
 	addFollowing: (req, res) => {
+		console.log('helpersreq.getUser(req).id', typeof(helpersreq.getUser(req).id))
+		console.log('req.params.userId', typeof(req.params.userId))
+		if (helpersreq.getUser(req).id === parseInt(req.params.userId)) {
+			return res.redirect('/tweets')
+		}
 		return Followship.create({
 			followerId: helpersreq.getUser(req).id,
 			followingId: req.params.userId
 		})
 			.then((followship) => {
+				if (followship.followerId ===  followship.followingId) {
+					followship.destroy()
+					return res.redirect('/tweets')
+				}
 				return res.redirect('back')
 			})
 	},

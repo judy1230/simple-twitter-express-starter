@@ -21,8 +21,8 @@ const tweetsController = {
 					{ model: User, as: 'Followings' },
 				]
 			}).then(users => {
-				console.log('users', users)
-				console.log('users.Followings', users.Followings)
+				//console.log('users', users)
+				//console.log('users.Followings', users.Followings)
 			  return users.map(user => ({
 					...user.dataValues,
 					FollowerCount: user.Followers.length,
@@ -115,7 +115,7 @@ const tweetsController = {
 
 		} else {
 			Reply.create({
-				UserId: helpers.getUser(req).id,
+				UserId: helpersreq.getUser(req).id,
 				TweetId: req.params.id,
 				comment: req.body.text,
 			})

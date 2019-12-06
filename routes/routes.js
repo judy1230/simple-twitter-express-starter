@@ -34,8 +34,8 @@ router.post('/tweets/:id/replies', authenticated, tweetsController.postReplies)
 router.post('/tweets/:tweetId/like', authenticated, userController.addLike)
 router.delete('/tweets/:tweetId/like', authenticated, userController.removeLike)
 router.get('/users/:id/tweets', authenticated, userController.getUser)
-router.post('/users/:userId/following/', authenticated, userController.addFollowing)
-router.delete('/users/:userId/following/', authenticated, userController.removeFollowing)
+router.post('/followships/:userId', authenticated, userController.addFollowing)
+router.delete('/followships/:userId', authenticated, userController.removeFollowing)
 
 
 // //get in admin

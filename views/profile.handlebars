@@ -23,10 +23,10 @@
 				</div>
 				{{#ifNotEquals profile.id localUser.id }}
 					{{#if this.isFollowed }}
-					<form action="/users/{{profile.id}}/following/?_method=DELETE" method="POST"><button type="submit"
+					<form action="/followships/{{profile.id}}?_method=DELETE" method="POST"><button type="submit"
 							class="btn btn-danger">UnFollowed</button></form>
 					{{else}}
-					<form action="/users/{{profile.id}}/following" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
+					<form action="/followships/{{profile.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
 					</form>
 					{{/if}}
 				{{else}}
