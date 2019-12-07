@@ -87,10 +87,12 @@ const tweetsController = {
 				{ model: User, as: 'LikedUsers' }
 			]
 		}).then(tweet => {
+			const isFollowed = helpersreq.getUser(req).Followings ? helpersreq.getUser(req).Followings.map(d => d.id).includes(tweet.User.id) : false
 			res.render('reply',
 				{
 					tweet: tweet,
-					user: tweet.User
+					user: tweet.User,
+					isFollowed
 				})
 		})
 

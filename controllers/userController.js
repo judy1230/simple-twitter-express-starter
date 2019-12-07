@@ -75,7 +75,7 @@ let userController = {
 			]
 		})
 			.then((user) => {
-				console.log('helpersreq.getUser(req)', helpersreq.getUser(req))
+				//console.log('helpersreq.getUser(req)', helpersreq.getUser(req))
 				const isFollowed = helpersreq.getUser(req).Followings ? helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id) : false
 				return res.render('profile', {
 					profile: user,

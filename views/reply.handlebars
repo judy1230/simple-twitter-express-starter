@@ -12,81 +12,98 @@
 						<h6 class="text-justify font-weight-light">{{user.introduction}}</h6>
 					</h4>
 					<ul class="list-unstyled list-inline">
-						<li><a href="#" class=" text-info text-reset">Tweets(<strong>{{user.Tweets.length}}</strong>)</a></li>
-						<li>Following <strong class="text-monospace text-secondary">{{user.Followings.length}}</strong></li>
-						<li>Follower <strong class="text-monospace text-secondary">{{user.Followers.length}}</strong></li>
-						<li><a href="#" class=" text-danger text-reset">Like(<strong>{{user.LikedTweets.length}}</strong>)</a></li>
+						<li><a href="/users/{{user.id}}/tweets">Tweets <strong>
+									{{user.Tweets.length}}</strong></a></li>
+						<li><a href="/users/{{user.id}}/followings">Following <strong
+									class="text-monospace text-secondary">{{user.Followings.length}}</strong></a></li>
+						<li><a href="/users/{{user.id}}/followers">Follower <strong
+									class="text-monospace text-secondary">{{user.Followers.length}}</strong></a></li>
+						<li><a href="/users/{{profile.id}}/likes">Like <strong
+									class="text-monospace text-secondary">{{user.LikedTweets.length}}</strong></a></li>
 					</ul>
 
 				</div>
-				<form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">Follow</button>
+
+				{{#ifNotEquals user.id localUser.id }}
+				{{#if this.isFollowed }}
+				<form action="/followships/{{user.id}}?_method=DELETE" method="POST"><button type="submit"
+						class="btn btn-danger">UnFollowed</button></form>
+				{{else}}
+				<form action="/followships/{{user.id}}" method="POST"><button type="submit"
+						class="btn btn-primary">Follow</button>
 				</form>
+				{{/if}}
+				{{else}}
+				<form action="/users/{{localUser.id}}/edit/?_method=PUT" method="POST"><button type="submit"
+						class="btn btn-info">Edit
+						Profile</button></form>
 				<hr>
-				{{!-- {{/each}} --}}
+				{{/ifNotEquals}}
 			</div>
+
+
+	</div>
+</div>
+<br /><br />
+<div class="container col-8">
+	<div class="row">
+		<h4>Tweets</h4>
+		<div class="card-body container row">
+			{{!-- {{#each user.Tweets}} --}}
+			<div class="col-3">
+				<img class="img-fluid rounded img-responsive" src="{{user.avatar}}">
+			</div>
+			<div class="container col-8">
+				<h4>
+					<a href="/users/{{user.id}}">{{user.name}}</a>
+
+
+					<small>{{moment tweet.createdAt}}</small>
+				</h4>
+				<p class="text-justify font-weight-light">{{tweet.description}}</p>
+
+				<ul class="list-unstyled list-inline">
+					<li><a href="/tweets/{{tweet.id}}/replies"
+							class=" text-info text-reset">Reply(<strong>{{tweet.Replies.length}}</strong>)</a></li>
+					<li><a href="/tweets/{{this.id}}/like"
+							class=" text-danger text-reset">Like(<strong>{{tweet.LikedUsers.length}}</strong>)</a></li>
+
+				</ul>
+			</div>
+			</hr>
+
 
 		</div>
 	</div>
-	<br /><br />
-	<div class="container col-8">
-		<div class="row">
-			<h4>Tweets</h4>
-			<div class="card-body container row">
-				{{!-- {{#each user.Tweets}} --}}
-				<div class="col-3">
-					<img class="img-fluid rounded img-responsive" src="{{user.avatar}}">
-				</div>
-				<div class="container col-8">
-					<h4>
-						<a href="/users/{{user.id}}">{{user.name}}</a>
 
-
-						<small>{{moment tweet.createdAt}}</small>
-					</h4>
-					<p class="text-justify font-weight-light">{{tweet.description}}</p>
-
-					<ul class="list-unstyled list-inline">
-						<li><a href="/tweets/{{tweet.id}}/replies"
-								class=" text-info text-reset">Reply(<strong>{{tweet.Replies.length}}</strong>)</a></li>
-						<li><a href="/tweets/{{this.id}}/like"
-								class=" text-danger text-reset">Like(<strong>{{tweet.LikedUsers.length}}</strong>)</a></li>
-
-					</ul>
-				</div>
-				</hr>
-
-
+	<div class="row">
+		<h4>Replies</h4>
+		<div class="card-body container row">
+			{{#each tweet.Replies}}
+			<div class="col-3">
+				<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
 			</div>
+
+			<div class="container col-8">
+				<h4>
+					<a href="/users/{{../user.id}}">{{../user.name}}</a>
+					<small>{{moment this.createdAt}}</small>
+				</h4>
+				<p class="text-justify font-weight-light">{{this.comment}}</p>
+			</div>
+			</hr>
+
+			{{/each}}
 		</div>
-
-		<div class="row">
-			<h4>Replies</h4>
-			<div class="card-body container row">
-				{{#each tweet.Replies}}
-				<div class="col-3">
-					<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
-				</div>
-
-				<div class="container col-8">
-					<h4>
-						<a href="/users/{{../user.id}}">{{../user.name}}</a>
-						<small>{{moment this.createdAt}}</small>
-					</h4>
-					<p class="text-justify font-weight-light">{{this.comment}}</p>
-				</div>
-				</hr>
-
-				{{/each}}
-			</div>
-		</div>
-		<form action="/tweets/{{tweet.id}}/replies" method="POST">
-			<div class="form-group ">
-				<textarea class="form-control" id="text" name="text" rows="3" placeholder="在想什麼?"></textarea>
-				<button type="submit" class="btn btn-primary float-right mt-2">Reply</button>
-			</div>
-		</form>
-
 	</div>
+	<form action="/tweets/{{tweet.id}}/replies" method="POST">
+		<div class="form-group ">
+			<textarea class="form-control" id="text" name="text" rows="3" placeholder="在想什麼?"></textarea>
+			<button type="submit" class="btn btn-primary float-right mt-2">Reply</button>
+		</div>
+	</form>
+
+</div>
 
 
 </div>
