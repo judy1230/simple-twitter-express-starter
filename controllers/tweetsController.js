@@ -102,7 +102,7 @@ const tweetsController = {
 			return res.redirect('/tweets')
 
 		}
-		if (!req.body.text.length > 140) {
+		if (req.body.text.length > 140) {
 			return res.redirect('/tweets')
 
 		} else {
@@ -121,11 +121,9 @@ const tweetsController = {
 	postReplies: (req, res) => {
 		if (!req.body.text) {
 			return res.redirect('back')
-
 		}
-		if (!req.body.text.length > 140) {
+		if (req.body.text.length > 140) {
 			return res.redirect('back')
-
 		} else {
 			Reply.create({
 				UserId: helpersreq.getUser(req).id,
@@ -133,7 +131,7 @@ const tweetsController = {
 				comment: req.body.text,
 			})
 				.then((tweet) => {
-					req.flash('success_msg', '推文成功')
+					req.flash('success_msg', '回覆成功')
 					return res.redirect('back')
 
 				})
