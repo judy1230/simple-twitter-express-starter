@@ -6,7 +6,7 @@ const Reply = db.Reply
 const Like = db.Like
 const pageLimit = 10
 const Followship = db.Followship
-const helpersreq = require('../_helpers')
+const helpersreq = require('../_helpers.js')
 
 
 const tweetsController = {
@@ -48,11 +48,10 @@ const tweetsController = {
 					const data = result.rows.map(r => ({
 						...r.dataValues,
 						description: r.dataValues.description.substring(0, 50),
-						isLiked: helpersreq.getUser(req).LikedTweets.map(d => d.id).includes(r.id)
+						isLiked: helpersreq.getUser(req).LikedTweets ? helpersreq.getUser(req).LikedTweets.map(d => d.id).includes(r.id) : false
 					}))
 					return { data, page, pages, totalPage, prev, next}
 				})
-			console.log('tweets.data', tweets.data.length)
 			return res.render('tweets', {
 				users,
 				isFollowed: users.isFollowed,
@@ -69,18 +68,32 @@ const tweetsController = {
 
 	},
 	getTweetReplies: (req, res) => {
-		return Tweet.findByPk(req.params.id, {
+		return Tweet.findByPk(req.params.tweet_id, {
+			order: [
+				[Reply, 'createdAt', 'DESC']
+			],
 			include: [
+				{
+					model: User,
+					include: [
+						Tweet,
+						{ model: Tweet, as: 'LikedTweets' },
+						{ model: User, as: 'Followers' },
+						{ model: User, as: 'Followings' }
+					],
+				},
+				//replies & likedusers in tweet
 				{ model: Reply, include: Tweet },
-				{ model: User, as:'LikedUsers'}
+				{ model: User, as: 'LikedUsers' }
 			]
+		}).then(tweet => {
+			res.render('reply',
+				{
+					tweet: tweet,
+					user: tweet.User
+				})
 		})
-			.then(tweet => {
-				res.render('reply',
-					{
-						tweet: tweet
-					})
-			})
+
 	},
 	postTweet: (req, res) => {
 		if (!req.body.text) {
@@ -105,7 +118,7 @@ const tweetsController = {
 	},
 	postReplies: (req, res) => {
 		if (!req.body.text) {
-			return res.redirect('/tweets')
+			return res.redirect('back')
 
 		}
 		if (!req.body.text.length > 140) {
@@ -114,12 +127,12 @@ const tweetsController = {
 		} else {
 			Reply.create({
 				UserId: helpersreq.getUser(req).id,
-				TweetId: req.params.id,
+				TweetId: req.params.tweet_id,
 				comment: req.body.text,
 			})
 				.then((tweet) => {
 					req.flash('success_msg', '推文成功')
-					return res.redirect('/tweets')
+					return res.redirect('back')
 
 				})
 		}

@@ -60,12 +60,14 @@ let userController = {
 				[Tweet, 'createdAt','DESC']
 			],
 			include: [
+				//get user.Tweets include replies
 				{ model: Tweet,
 					include: [
 						{ model: User, as: 'LikedUsers' },
 						Reply,
 					],
 				},
+				//get user's tweets replies
 				{ model: Reply, include: Tweet },
 				{ model: Tweet, as: 'LikedTweets' },
 				{ model: User, as: 'Followers' },
@@ -73,7 +75,8 @@ let userController = {
 			]
 		})
 			.then((user) => {
-				const isFollowed = helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id)
+				console.log('helpersreq.getUser(req)', helpersreq.getUser(req))
+				const isFollowed = helpersreq.getUser(req).Followings ? helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id) : false
 				return res.render('profile', {
 					profile: user,
 					localUser: helpersreq.getUser(req),
@@ -84,7 +87,7 @@ let userController = {
 	addLike: (req, res) => {
 		return Like.create({
 			UserId: helpersreq.getUser(req).id,
-			TweetId: req.params.tweetId
+			TweetId: req.params.id
 		})
 			.then((tweet) => {
 				return res.redirect('/tweets')
@@ -94,7 +97,7 @@ let userController = {
 		return Like.findOne({
 			where: {
 				UserId: helpersreq.getUser(req).id,
-				TweetId: req.params.tweetId
+				TweetId: req.params.id
 			}
 		}).then((like) => {
 			like.destroy()

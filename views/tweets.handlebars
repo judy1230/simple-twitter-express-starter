@@ -26,9 +26,6 @@
 					<ul class="list-unstyled list-inline row">
 						<li><a href="/tweets/{{this.id}}/replies" class=" text-info text-reset">Reply(<strong>{{this.Replies.length}}</strong>)</a></li>
 
-						{{!-- <li><a
-							class=" text-danger text-reset">Like(<strong>{{this.LikedUsers.length}}</strong>)</a></li> --}}
-
 						<li>
 							{{#if this.isLiked }}
 							<form action="/tweets/{{this.id}}/unlike/?_method=DELETE" method="POST" class="ml-3 "><button type="submit"
