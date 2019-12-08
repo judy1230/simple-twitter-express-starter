@@ -8,7 +8,9 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER
     },
     followerId: DataTypes.INTEGER,
-    followingId: DataTypes.INTEGER
+    followingId: DataTypes.INTEGER,
+    
+
 
   }, {});
   Followship.associate = function (models) {

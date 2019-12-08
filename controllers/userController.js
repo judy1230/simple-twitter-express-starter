@@ -104,7 +104,7 @@ let userController = {
 
 	},
 	addFollowing: (req, res) => {
-		if (helpersreq.getUser(req).id === req.body.id) {
+		if (helpersreq.getUser(req).id === parseInt(req.body.id)) {
 			return res.redirect('/tweets')
 		}
 		return Followship.create({

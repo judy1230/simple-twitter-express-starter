@@ -81,12 +81,12 @@
 		<div class="card-body container row">
 			{{#each tweet.Replies}}
 			<div class="col-3">
-				<img class="img-fluid rounded img-responsive" src="{{../user.avatar}}">
+				<img class="img-fluid rounded img-responsive" src="{{this.User.avatar}}">
 			</div>
 
 			<div class="container col-8">
 				<h4>
-					<a href="/users/{{../user.id}}">{{../user.name}}</a>
+					<a href="/users/{{this.User.id}}">{{this.User.name}}</a>
 					<small>{{moment this.createdAt}}</small>
 				</h4>
 				<p class="text-justify font-weight-light">{{this.comment}}</p>
@@ -98,7 +98,7 @@
 	</div>
 	<form action="/tweets/{{tweet.id}}/replies" method="POST">
 		<div class="form-group ">
-			<textarea class="form-control" id="text" name="text" rows="3" placeholder="在想什麼?"></textarea>
+			<textarea class="form-control" id="comment" name="comment" rows="3" placeholder="在想什麼?"></textarea>
 			<button type="submit" class="btn btn-primary float-right mt-2">Reply</button>
 		</div>
 	</form>

@@ -2,7 +2,7 @@
 	<div class="container col-7">
 		<form action="/tweets" method="POST">
 			<div class="form-group ">
-				<textarea class="form-control" id="text" name="text" rows="3" placeholder="在想什麼?"></textarea>
+				<textarea class="form-control" id="description" name="description" rows="3" placeholder="在想什麼?"></textarea>
 				<input type="hidden" name="UserId" value="{{user.id}}" />
 				<button type="submit" class="btn btn-primary float-right mt-2">Tweet</button>
 			</div>
@@ -88,7 +88,7 @@
 			</h4>
 			<p class="text-justify font-weight-light">{{this.introduction}}</p>
 			<div class="container text-right">
-			{{!-- {{#ifNotEquals this.id ../localUser.id }} --}}
+			{{#ifNotEquals this.id ../localUser.id }}
 			  {{#if isFollowed }}
 			<form action="/followships/{{this.id}}?_method=DELETE" method="POST"><button type="submit"
 					class="btn btn-danger">UnFollowed</button></form>
@@ -98,11 +98,11 @@
 			<button type="submit"class="btn btn-primary">Follow</button>
 			</form>
 			  {{/if}}
-			{{!-- {{else}}
+			{{else}}
 			  <form action="/users/{{../localUser.id}}/edit/?_method=PUT" method="POST"><button type="submit" class="btn btn-info">Edit
 					</button></form>
-			<hr> --}}
-			{{!-- {{/ifNotEquals}} --}}
+			<hr>
+			 {{/ifNotEquals}}
 			</div>
 		</div>
 		</hr>

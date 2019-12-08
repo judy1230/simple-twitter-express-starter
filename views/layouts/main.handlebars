@@ -18,11 +18,11 @@
 			<ul class="navbar-nav mr-auto">
 			</ul>
 			<div>
-				{{#ifCond user.role 'admin'}}
+				{{#ifCond localUser.role 'admin'}}
 				<a href="/admin/tweets" style="color: white;margin-right: 10px;">Admin 後台</a>
 				{{/ifCond}}
-				{{#if user}}
-				<span style="color: white;margin-right: 10px;">Hi, {{user.name}}</span>
+				{{#if localUser}}
+				<span style="color: white;margin-right: 10px;">Hi, {{localUser.name}}</span>
 				<a href="/users/{{user.id}}/tweets" style="color: white;margin-right: 10px;">Profile</a>
 				<a href="/logout"><button class="btn btn-outline-success my-2 my-sm-0">LogOut</button></a>
 				{{/if}}

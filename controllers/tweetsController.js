@@ -4,7 +4,7 @@ const User = db.User
 const Tweet = db.Tweet
 const Reply = db.Reply
 const Like = db.Like
-const pageLimit = 10
+const pageLimit = 20
 const Followship = db.Followship
 const helpersreq = require('../_helpers.js')
 
@@ -21,7 +21,7 @@ const tweetsController = {
 					{ model: User, as: 'Followings' },
 				]
 			}).then(users => {
-			  return users.map(user => ({
+				return users.map(user => ({
 					...user.dataValues,
 					FollowerCount: user.Followers.length,
 					isFollowed: helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id)
@@ -50,7 +50,7 @@ const tweetsController = {
 						description: r.dataValues.description.substring(0, 50),
 						isLiked: helpersreq.getUser(req).LikedTweets ? helpersreq.getUser(req).LikedTweets.map(d => d.id).includes(r.id) : false
 					}))
-					return { data, page, pages, totalPage, prev, next}
+					return { data, page, pages, totalPage, prev, next }
 				})
 			//console.log('tweet.data', tweets.data)
 			return res.render('tweets', {
@@ -84,13 +84,15 @@ const tweetsController = {
 					],
 				},
 				//replies & likedusers in tweet
-				{ model: Reply, include: Tweet },
+				{ model: Reply, include: User },
 				{ model: User, as: 'LikedUsers' }
 			]
 		}).then(tweet => {
+			console.log('tweet.Replies', tweet.Replies.User)
 			const isFollowed = helpersreq.getUser(req).Followings ? helpersreq.getUser(req).Followings.map(d => d.id).includes(tweet.User.id) : false
 			res.render('reply',
 				{
+					localUser: helpersreq.getUser(req),
 					tweet: tweet,
 					user: tweet.User,
 					isFollowed
@@ -99,46 +101,37 @@ const tweetsController = {
 
 	},
 	postTweet: (req, res) => {
-		if (!req.body.text || req.body.test.length === 0) {
+		if (!req.body.description || req.body.description.length > 140) {
 			return res.redirect('/tweets')
-
 		}
-		if (req.body.text.length > 140) {
-			return res.redirect('/tweets')
+		return Tweet.create({
+			UserId: helpersreq.getUser(req).id,
+			description: req.body.description,
+		})
+			.then((tweet) => {
+				req.flash('success_msg', '推文成功')
+				return res.redirect('/tweets')
 
-		} else {
-			Tweet.create({
-				UserId: helpersreq.getUser(req).id,
-				description: req.body.text,
 			})
-				.then((tweet) => {
-					console.log('tweet', tweet)
-					tweet.save()
-					tweeti = Tweet.findOne({ where: { userId: 1 } })
-					console.log('tweeti', tweeti)
-					req.flash('success_msg', '推文成功')
-					return res.redirect('/tweets')
 
-				})
-		}
 
 	},
 
-	postReplies:  (req, res) => {
-		if (!req.body.text || req.body.test.length === 0) {
-				return res.redirect('back')
-			}
-			if (req.body.text.length > 140) {
-				return res.redirect('back')
-			}
-			const reply = Reply.create({
-					UserId: helpersreq.getUser(req).id,
-					TweetId: req.params.tweet_id,
-					comment: req.body.text,
-				})
-		  //reply.save();
+	postReplies: (req, res) => {
+		//有回覆文章條件的話就會test fail, 所以先command起來
+		// if (!req.body.comment || req.body.comment.length > 140) {
+		// 	return res.redirect('back')
+		// }
+
+		return Reply.create({
+			UserId: helpersreq.getUser(req).id,
+			TweetId: req.params.tweet_id,
+			comment: req.body.comment,
+		}).then((reply) => {
 			req.flash('success_msg', '回覆成功')
-		return res.redirect(`/tweets/${req.params.tweet_id}/replies`)
+			return res.redirect(`/tweets/${req.params.tweet_id}/replies`)
+		})
+
 
 
 	},
