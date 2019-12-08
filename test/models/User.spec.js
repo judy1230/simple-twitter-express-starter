@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test'
+//process.env.NODE_ENV = 'test'
 
 var chai = require('chai')
 var sinon = require('sinon')
@@ -55,6 +55,7 @@ describe('# User Model', () => {
       expect(User.hasMany).to.have.been.calledWith(Like)
       done()
     })
+
     it('should have many followships', (done) => {
       expect(User.belongsToMany).to.have.been.calledWith(User)
       done()

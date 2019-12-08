@@ -1,3 +1,4 @@
+
 var chai = require('chai')
 var request = require('supertest')
 var sinon = require('sinon')
@@ -28,7 +29,7 @@ describe('# tweet request', () => {
     })
     describe('user log in', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -45,7 +46,7 @@ describe('# tweet request', () => {
           .get('/tweets')
           .set('Accept', 'application/json')
           .expect(200)
-          .end(function(err, res) {
+          .end(function (err, res) {
             if (err) return done(err);
             res.text.should.include('User1 的 Tweet1')
             res.text.should.include('User1 的 Tweet2')
@@ -54,7 +55,7 @@ describe('# tweet request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
@@ -66,7 +67,7 @@ describe('# tweet request', () => {
   context('# post', () => {
     describe('when successfully save', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -94,7 +95,7 @@ describe('# tweet request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
@@ -104,7 +105,7 @@ describe('# tweet request', () => {
 
     describe('when failed without login', () => {
       before(async() => {
-        
+
       })
 
       it('will redirect index', (done) => {
@@ -120,13 +121,13 @@ describe('# tweet request', () => {
       })
 
       after(async () => {
-        
+
       })
     })
 
     describe('when failed without validation', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -154,7 +155,7 @@ describe('# tweet request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
@@ -166,7 +167,7 @@ describe('# tweet request', () => {
   context('# like', () => {
     describe('like first tweet', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -195,7 +196,7 @@ describe('# tweet request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
@@ -208,7 +209,7 @@ describe('# tweet request', () => {
   context('# unlike', () => {
     describe('like first tweet', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -239,7 +240,7 @@ describe('# tweet request', () => {
 
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
