@@ -6,10 +6,8 @@ const Reply = db.Reply
 const Like = db.Like
 const Followship = db.Followship
 const helpersreq = require('../_helpers')
-const jwt = require('jsonwebtoken')
 const passportJWT = require('passport-jwt')
-const ExtractJwt = passportJWT.ExtractJwt
-const JwtStrategy = passportJWT.Strategy
+
 
 
 
@@ -57,11 +55,12 @@ let userController = {
 	getUser: (req, res) => {
 		return User.findByPk(req.params.id, {
 			order: [
-				[Tweet, 'createdAt','DESC']
+				[Tweet, 'createdAt', 'DESC']
 			],
 			include: [
 				//get user.Tweets include replies
-				{ model: Tweet,
+				{
+					model: Tweet,
 					include: [
 						{ model: User, as: 'LikedUsers' },
 						Reply,
@@ -75,7 +74,6 @@ let userController = {
 			]
 		})
 			.then((user) => {
-				//console.log('helpersreq.getUser(req)', helpersreq.getUser(req))
 				const isFollowed = helpersreq.getUser(req).Followings ? helpersreq.getUser(req).Followings.map(d => d.id).includes(user.id) : false
 				return res.render('profile', {
 					profile: user,
@@ -89,8 +87,8 @@ let userController = {
 			UserId: helpersreq.getUser(req).id,
 			TweetId: req.params.id
 		})
-			.then((tweet) => {
-				return res.redirect('/tweets')
+			.then((like) => {
+				return res.redirect('back')
 			})
 	},
 	removeLike: (req, res) => {
@@ -101,22 +99,19 @@ let userController = {
 			}
 		}).then((like) => {
 			like.destroy()
-				.then((like) => {
-					return res.redirect('/tweets')
-				})
+			return res.redirect('back')
 		})
 
 	},
 	addFollowing: (req, res) => {
-
-		if (helpersreq.getUser(req).id == req.body.id) {
+		if (helpersreq.getUser(req).id === req.body.id) {
 			return res.redirect('/tweets')
 		}
 		return Followship.create({
 			followerId: helpersreq.getUser(req).id,
 			followingId: req.body.id
 		})
-			.then(() => {
+			.then((followship) => {
 				return res.redirect('/tweets')
 			})
 	},

@@ -46,7 +46,7 @@ describe('# followship request', () => {
 
       it('will show followings', (done) => {
         request(app)
-          .post('/followships/2')
+          .post('/followships')
           .send('id=2')
           .set('Accept', 'application/json')
           .expect(302)

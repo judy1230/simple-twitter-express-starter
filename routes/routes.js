@@ -33,7 +33,7 @@ router.get('/users/:id/tweets', authenticated, userController.getUser)
 router.get('/tweets/:tweet_id/replies', authenticated,tweetsController.getTweetReplies)
 router.post('/tweets/:tweet_id/replies', authenticated, tweetsController.postReplies)
 router.post('/tweets/:id/like', authenticated, userController.addLike)
-router.delete('/tweets/:id/unlike', authenticated, userController.removeLike)
+router.post('/tweets/:id/unlike', authenticated, userController.removeLike)
 
 router.post('/followships', authenticated, userController.addFollowing)
 router.delete('/followships/:id', authenticated, userController.removeFollowing)

@@ -52,6 +52,7 @@ const tweetsController = {
 					}))
 					return { data, page, pages, totalPage, prev, next}
 				})
+			//console.log('tweet.data', tweets.data)
 			return res.render('tweets', {
 				users,
 				isFollowed: users.isFollowed,
@@ -98,7 +99,7 @@ const tweetsController = {
 
 	},
 	postTweet: (req, res) => {
-		if (!req.body.text) {
+		if (!req.body.text || req.body.test.length === 0) {
 			return res.redirect('/tweets')
 
 		}
@@ -111,6 +112,10 @@ const tweetsController = {
 				description: req.body.text,
 			})
 				.then((tweet) => {
+					console.log('tweet', tweet)
+					tweet.save()
+					tweeti = Tweet.findOne({ where: { userId: 1 } })
+					console.log('tweeti', tweeti)
 					req.flash('success_msg', '推文成功')
 					return res.redirect('/tweets')
 
@@ -118,24 +123,23 @@ const tweetsController = {
 		}
 
 	},
-	postReplies: (req, res) => {
-		if (!req.body.text) {
-			return res.redirect('back')
-		}
-		if (req.body.text.length > 140) {
-			return res.redirect('back')
-		} else {
-			Reply.create({
-				UserId: helpersreq.getUser(req).id,
-				TweetId: req.params.tweet_id,
-				comment: req.body.text,
-			})
-				.then((tweet) => {
-					req.flash('success_msg', '回覆成功')
-					return res.redirect('back')
 
+	postReplies:  (req, res) => {
+		if (!req.body.text || req.body.test.length === 0) {
+				return res.redirect('back')
+			}
+			if (req.body.text.length > 140) {
+				return res.redirect('back')
+			}
+			const reply = Reply.create({
+					UserId: helpersreq.getUser(req).id,
+					TweetId: req.params.tweet_id,
+					comment: req.body.text,
 				})
-		}
+		  //reply.save();
+			req.flash('success_msg', '回覆成功')
+		return res.redirect(`/tweets/${req.params.tweet_id}/replies`)
+
 
 	},
 }
