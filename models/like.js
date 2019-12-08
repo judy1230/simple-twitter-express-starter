@@ -2,6 +2,7 @@
 module.exports = (sequelize, DataTypes) => {
   const Like = sequelize.define('Like', {
     id: {
+
       allowNull: false,
       autoIncrement: true,
       primaryKey: true,
@@ -10,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     UserId: DataTypes.INTEGER,
     TweetId: DataTypes.INTEGER
   }, {});
+
   Like.associate = function (models) {
     Like.belongsTo(models.Tweet)
     Like.belongsTo(models.User)
