@@ -1,4 +1,4 @@
-process.env.NODE_ENV = 'test'
+//process.env.NODE_ENV = 'test'
 
 var chai = require('chai');
 var sinon = require('sinon');
@@ -17,7 +17,7 @@ const db = require('../../models')
 const FollowshipModel = require('../../models/followship')
 
 describe('# Followship Model', () => {
-  
+
   before(done => {
     done()
   })

@@ -1,3 +1,5 @@
+
+
 var chai = require('chai')
 var request = require('supertest')
 var sinon = require('sinon')
@@ -14,7 +16,7 @@ describe('# Admin::User request', () => {
   context('go to admin user page', () => {
     describe('if normal user log in', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -36,16 +38,16 @@ describe('# Admin::User request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})
       })
     })
-    
+
     describe('if admin user log in', () => {
       before(async() => {
-        
+
         this.ensureAuthenticated = sinon.stub(
           helpers, 'ensureAuthenticated'
         ).returns(true);
@@ -67,7 +69,7 @@ describe('# Admin::User request', () => {
       })
 
       after(async () => {
-        
+
         this.ensureAuthenticated.restore();
         this.getUser.restore();
         await db.User.destroy({where: {},truncate: true})

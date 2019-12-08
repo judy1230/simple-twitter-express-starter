@@ -9,7 +9,12 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       UserId: {
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        reference: {
+          model: 'User',
+          key: 'id'
+        }
       },
       description: {
         type: Sequelize.TEXT
@@ -22,7 +27,7 @@ module.exports = {
         allowNull: false,
         type: Sequelize.DATE
       }
-    });
+    })
   },
   down: (queryInterface, Sequelize) => {
     return queryInterface.dropTable('Tweets');
