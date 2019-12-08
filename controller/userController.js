@@ -159,6 +159,51 @@ const userController = {
         totalTweets
       })
     })
-  }
+  },
+  getLike: (req, res) => {
+    return User.findByPk(req.params.id, {
+      include: [
+        {
+          model: Tweet,
+          include: [{ model: User, as: 'LikedUsers' }]
+        },
+        {
+          model: Tweet,
+          as: 'LikedTweets',
+          include: [User, { model: User, as: 'LikedUsers' }, { model: Reply }]
+        },
+        { model: User, as: 'Followers' },
+        { model: User, as: 'Followings' }
+      ],
+      order: [[{ model: Tweet, as: 'LikedTweets' }, Like, 'createdAt', 'DESC']]
+    }).then(user => {
+      user.isFollowed = user.Followers.map(r => r.id).includes(
+        helpers.getUser(req).id
+      )
+      const totalTweets = user.Tweets.length
+      const totalLiked = user.LikedTweets.length
+      const totalFollowers = user.Followers.length
+      const totalFollowings = user.Followings.length
+      const likedTweets = user.LikedTweets.map(tweet => ({
+        ...tweet.dataValues,
+        isLiked: helpers.getUser(req).LikedTweets
+          ? helpers
+            .getUser(req)
+            .LikedTweets.map(d => d.id)
+            .includes(tweet.id)
+          : helpers.getUser(req).LikedTweets,
+        totalLikedUsers: tweet.dataValues.LikedUsers.length,
+        replyCount: tweet.dataValues.Replies.length
+      }))
+      return res.render('likes', {
+        profile: user,
+        totalLiked,
+        totalFollowers,
+        totalFollowings,
+        totalTweets,
+        likedTweets
+      })
+    })
+  },
 }
 module.exports = userController

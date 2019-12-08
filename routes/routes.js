@@ -28,6 +28,8 @@ router.put('/user/:id/edit', authenticated, upload.sigle('avatar'), userControll
 //追蹤路由
 router.get('/users/:id/followings', authenticated, userController.getFollowings)
 router.get('/users/:id/followers', authenticated, userController.getFollowers)
+//Like路由
+router.get('/users/:id/likes', authenticated, userController.getLike)
 
 router.post('/following/:userId', userController.addFollowing)
 router.delete('/following/:userId', userController.removeFollowing)
