@@ -1,7 +1,5 @@
 let routes = require('./routes');
-//let apis = require('./apis')
-const express = require('express');
-const app = express.Router();
+
 
 
 const multer = require('multer')
