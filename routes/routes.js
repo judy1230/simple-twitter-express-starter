@@ -36,16 +36,17 @@ router.post('/tweets/:id/unlike', authenticated, userController.removeLike)
 
 router.post('/followships', authenticated, userController.addFollowing)
 router.delete('/followships/:id', authenticated, userController.removeFollowing)
-router.get('./user/:id/edit', authenticated, userController.editUser)
-router.put('/user/:id/edit', authenticated, upload.sigle('avatar'), userController.putUSer)
+
+//編輯使用者
+router.get('/users/:id/edit', authenticated, userController.editUser)
+router.post('/users/:id/edit', authenticated, upload.single('avatar'), userController.putUser)
 //追蹤路由
 router.get('/users/:id/followings', authenticated, userController.getFollowings)
 router.get('/users/:id/followers', authenticated, userController.getFollowers)
 //Like路由
 router.get('/users/:id/likes', authenticated, userController.getLike)
 
-router.post('/following/:userId', userController.addFollowing)
-router.delete('/following/:userId', userController.removeFollowing)
+
 
 // //get in admin
  router.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/tweets'))
@@ -68,4 +69,3 @@ router.post('/signin', passport.authenticate('local', {
 router.get('/logout', userController.logout)
 //}
 module.exports = router
-
