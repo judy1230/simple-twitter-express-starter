@@ -16,7 +16,9 @@
         <textarea class="form-control" name="introduction" id="introduction" rows="8"
           placeholder="Type anything about you here...">{{user.introduction}}</textarea>
       </div>
-      <button type="submit" class="btn btn-primary float-right">Update</button>
+      <form action="/users/{{res.locals.user.id}}" method="POST"><button type="submit" class="btn btn-primary">Update</button>
+      </form>
+    <hr>
     </div>
   </div>
 </form>
